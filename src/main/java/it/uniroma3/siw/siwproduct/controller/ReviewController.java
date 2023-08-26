@@ -45,7 +45,7 @@ public class ReviewController {
 			this.prodottoService.saveProdotto(prodotto);
 			return this.prodottoService.function(model, prodotto, this.globalController.getUser().getUsername());
 		}else {
-		return "prodottoError.html";
+		return "prodottoError";
 		}
      }
 	

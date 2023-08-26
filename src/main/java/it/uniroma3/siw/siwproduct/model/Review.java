@@ -2,12 +2,10 @@ package it.uniroma3.siw.siwproduct.model;
 
 import java.util.Objects;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "REVIEWS")
 public class Review {
 	
 	@Id

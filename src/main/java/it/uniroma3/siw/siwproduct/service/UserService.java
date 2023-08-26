@@ -6,6 +6,7 @@ import java.util.Optional;
 import it.uniroma3.siw.siwproduct.model.User;
 import it.uniroma3.siw.siwproduct.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 

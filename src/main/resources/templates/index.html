@@ -45,14 +45,6 @@
 						<li class="nav-item active">
 							<a class="nav-link" href="/">Home</a>
 						</li>
-
-				<!--		<div class="input-box">
-							<label>
-								<input type="text" placeholder="Search here..." />
-							</label>
-							<button class="button">Go</button>
-						</div> -->
-
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
@@ -61,7 +53,7 @@
 								<span th:text="${userDetails.username}"></span>
 								<a class="nav-link" href="/logout"> Log out <img src="../static/images/user.svg" alt=""></a>
 							</div>
-							<div th:unless="${userdDetail}">
+							<div th:unless="${userDetails}">
 								<a class="nav-link" href="/login"> Login <img src="../static/images/user.svg"
 																			  alt=""></a>
 							</div>
@@ -102,13 +94,13 @@
 					<!-- Start Column 1 -->
 					<div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
 						<h2 class="mb-4 section-title">Crafted with excellent material.</h2>
-						<p><a href="prodotti.html" class="btn">Prodotti</a></p>
+						<p><a href="/prodotti" class="btn">Prodotti</a></p>
 					</div> 
 					<!-- End Column 1 -->
 
 					<!-- Start Column 2 -->
 					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-						<a class="product-item" href="admin/indexProdotto.html">
+						<a class="product-item" href="/admin/indexProdotto">
 							<img src="../static/images/product-1.png" class="img-fluid product-thumbnail" alt=" vuoto">
 							<h3 class="product-title">Nordic Chair</h3>
 							<strong class="product-price">$50.00</strong>
@@ -130,7 +122,7 @@
 
 					<!-- Start Column 4 -->
 					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-						<a class="product-item" href="admin/indexProdotto.html">
+						<a class="product-item" href="/admin/indexProdotto">
 							<img src="../static/images/product-3.png" class="img-fluid product-thumbnail" alt="">
 							<h3 class="product-title">Ergonomic Chair</h3>
 							<strong class="product-price">$43.00</strong>
@@ -244,7 +236,7 @@
 
 				<div class="row g-5 mb-5">
 					<div class="col-lg-4">
-						<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">FiloSOFA<span>.</span></a></div>
+						<div class="mb-4 footer-logo-wrap"><a href="/index" class="footer-logo">FiloSOFA<span>.</span></a></div>
 
 
 						<ul class="list-unstyled custom-social">
@@ -259,9 +251,9 @@
 						<div class="row links-wrap">
 							<div class="col-6 col-sm-6 col-md-3">
 								<ul class="list-unstyled">
-									<li><a href="index.html">Home</a></li>
-									<li><a href="prodotti.html">Prodotti</a></li>
-									<li><a href="fornitori.html">Fornitori</a></li>
+									<li><a href="/index">Home</a></li>
+									<li><a href="/prodotti">Prodotti</a></li>
+									<li><a href="/fornitori">Fornitori</a></li>
 								</ul>
 							</div>
 

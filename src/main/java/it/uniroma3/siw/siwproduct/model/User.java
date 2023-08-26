@@ -1,6 +1,7 @@
 package it.uniroma3.siw.siwproduct.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 
 @Entity
@@ -10,9 +11,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
     private String name;
+    @NotBlank
     private String surname;
+    @NotBlank
     private String email;
+
+
+    @NotBlank
+    private String username;
 
     public Long getId() {
         return id;
@@ -44,4 +52,13 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
 }

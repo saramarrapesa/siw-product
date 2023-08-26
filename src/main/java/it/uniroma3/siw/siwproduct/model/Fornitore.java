@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="FORNITORI")
@@ -19,11 +20,11 @@ public class Fornitore {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@Column(nullable= false)
+
+	@NotBlank
 	private String nome;
-	@Column(nullable= false)
 	private String address ;
+	@NotBlank
 	private String email;
 	
 	@OneToOne
