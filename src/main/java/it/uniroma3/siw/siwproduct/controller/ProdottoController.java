@@ -43,7 +43,7 @@ public class ProdottoController {
 		return "admin/formNewProdotto";
 	}
 	
-	@GetMapping(value="/admin/formUpdateProdotto")
+	@GetMapping(value="/admin/formUpdateProdotto/{prodottoId}")
 	public String formUpdateProdotto(@PathVariable("prodottoId") Long prodottoId, Model model) {
 		Prodotto prodotto = this.prodottoService.findProdottoById(prodottoId);
 		if(prodotto!=null) {
@@ -80,7 +80,7 @@ public class ProdottoController {
 
 	@GetMapping(value = "/admin/removeFornitoreToProdotto/{fornitoreId}/{prodottoId}")
 	public String removeFornitoreToProdotto(@PathVariable("prodottoId") Long prodottoId , @PathVariable("fornitoreId") Long fornitoreId, Model model ){
-		Prodotto prodotto = this.prodottoService.findProdottoById(prodottoId);
+		Prodotto prodotto = this.prodottoService.deleteFornitoreFromProdotto(prodottoId,fornitoreId);
 		if(prodotto!=null){
 			List<Fornitore> fornitoriToAdd= fornitoreService.findFornitoriInProdotto(prodottoId);
 			model.addAttribute("prodotto",prodotto);
@@ -153,7 +153,7 @@ public class ProdottoController {
 		return "prodotti";
 	}
 
-	@GetMapping("admin/updateFornitori/{id}")
+	@GetMapping("admin/updateFornitori/{prodottoId}")
 	public String updateFornitori(@PathVariable("prodottoId") Long prodottoId, Model model){
 		List<Fornitore> fornitoriToAdd= this.fornitoreService.findFornitoriInProdotto(prodottoId);
 		model.addAttribute("fornitoriToAdd", fornitoriToAdd);
