@@ -32,28 +32,28 @@ public class AuthenticationController {
 	public String showRegisterForm (Model model) {
 		model.addAttribute("user", new User());
 		model.addAttribute("credentials", new Credentials());
-		return "formRegisterUser.html";
+		return "formRegisterUser";
 	}
 	
 	@GetMapping(value = "/login") 
 	public String showLoginForm (Model model) {
-		return "formLogin.html";
+		return "formLogin";
 	}
 
 	@GetMapping(value = "/") 
 	public String index(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication instanceof AnonymousAuthenticationToken) {
-	        return "index.html";
+	        return "index";
 		}
 		else {		
 			UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
 			if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
-				return "admin/indexAdmin.html";
+				return "admin/indexAdmin";
 			}
 		}
-        return "index.html";
+        return "index";
 	}
 		
     @GetMapping(value = "/success")
@@ -62,9 +62,9 @@ public class AuthenticationController {
     	UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
     	if (credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
-            return "admin/indexAdmin.html";
+            return "admin/indexAdmin";
         }
-        return "index.html";
+        return "index";
     }
 
 	@PostMapping(value = { "/register" })
@@ -80,9 +80,9 @@ public class AuthenticationController {
             credentials.setUser(user);
             credentialsService.saveCredentials(credentials);
             model.addAttribute("user", user);
-            return "registrationSuccessful.html";
+            return "registrationSuccessful";
         }
-        return "registerUser.html";
+        return "formRegisterUser";
     }
 
 }

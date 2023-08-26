@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 
 
 @Controller
@@ -29,23 +30,23 @@ public class FornitoreController {
 	@GetMapping(value="/admin/formNewFornitore")
 	public String formNewFornitore(Model model) {
 		model.addAttribute("fornitore", new Fornitore());
-		return "admin/formNewFornitore.html";
+		return "admin/formNewFornitore";
 	}
 	
 	@GetMapping(value="/admin/indexFornitore")
 	public String indexFornitore() {
-		return "admin/indexFornitore.html";
+		return "admin/indexFornitore";
 	}
 	
 	@PostMapping("/admin/fornitore")
-		public String newFornitore(@Valid @ModelAttribute("fornitore") Fornitore fornitore , BindingResult bindingResult , @RequestParam("fornitoreImage") MultipartFile multipartFile , Model model) {
+		public String newFornitore(@Valid @ModelAttribute("fornitore") Fornitore fornitore , BindingResult bindingResult , @RequestParam("fornitoreImage") MultipartFile multipartFile , Model model) throws IOException {
 		this.fornitoreValidator.validate(fornitore, bindingResult);
 		if(!bindingResult.hasErrors()) {
-			model.addAttribute("fornitore", this.fornitoreService.createNewFornitore(fornitore));
-			return "fornitore.html";
+			model.addAttribute("fornitore", this.fornitoreService.createNewFornitore(fornitore , multipartFile));
+			return "fornitore";
 		}else {
 			model.addAttribute("messaggioErrore", "Questo fornitore esiste già");
-			return "admin/formNewFornitore.html";
+			return "admin/formNewFornitore";
 
 		}
 		
@@ -56,17 +57,17 @@ public class FornitoreController {
 		Fornitore fornitore = this.fornitoreService.findFornitoreById(id);
 		if(fornitore!=null) {
 			model.addAttribute("fornitore", fornitore);
-			return "foritore.html";
+			return "fornitore";
 		}
 		else {
-			return "fornitoreError.html";
+			return "fornitoreError";
 		}
 	}
 	
 	@GetMapping("/fornitori")
 	public String getFornitori(Model model) {
 		model.addAttribute("fornitori", this.fornitoreService.findAllForniori());
-		return "fornitori.html";
+		return "fornitori";
 	}
 
 }

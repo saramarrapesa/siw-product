@@ -23,7 +23,7 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 		<link href="../static/css/tiny-slider.css" rel="stylesheet">
 		<link href="../static/css/style.css" rel="stylesheet">
-	    <link rel="stylesheet" href="../static/css/searchBar.css">
+	    <link rel="stylesheet" href="../static/scss/style.scss">
 
 		<title> Siw Product </title>
 </head>
@@ -34,7 +34,7 @@
 		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
 
 			<div class="container">
-				<a class="navbar-brand" href="index.html">FiloSOFA<span>.</span></a>
+				<a class="navbar-brand" href="/index">FiloSOFA<span>.</span></a>
 
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -43,7 +43,7 @@
 				<div class="collapse navbar-collapse" id="navbarsFurni">
 					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
 						<li class="nav-item active">
-							<a class="nav-link" href="index.html">Home</a>
+							<a class="nav-link" href="/">Home</a>
 						</li>
 
 				<!--		<div class="input-box">
@@ -56,8 +56,16 @@
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-						<li><a class="nav-link" href="formLogin.html"> Login <img src="../static/images/user.svg" alt=""></a></li>
 						<li>
+							<div th:if="${userDetails.username}">
+								<span th:text="${userDetails.username}"></span>
+								<a class="nav-link" href="/logout"> Log out <img src="../static/images/user.svg" alt=""></a>
+							</div>
+							<div th:unless="${userdDetail}">
+								<a class="nav-link" href="/login"> Login <img src="../static/images/user.svg"
+																			  alt=""></a>
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -73,7 +81,7 @@
 							<div class="intro-excerpt">
 								<h1>Modern Interior <span class="d-block">Design Studio</span></h1>
 								<p class="mb-4">Benvenuto sul nostro sito. Pronto ad esplorare il nostro catalogo? </p>
-								<p><a href="prodotti.html" class="btn btn-secondary me-2">Prodotti</a><a href="fornitori.html" class="btn btn-white-outline">Fornitori</a></p>
+								<p><a href="/prodotti" class="btn btn-secondary me-2">Prodotti</a><a href="/fornitori" class="btn btn-white-outline">Fornitori</a></p>
 							</div>
 						</div>
 						<div class="col-lg-7">
@@ -196,107 +204,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- End Why Choose Us Section -->
-
-
-
-
-
-	<!--
-		<div class="testimonial-section">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-7 mx-auto text-center">
-						<h2 class="section-title">Testimonials</h2>
-					</div>
-				</div>
-
-				<div class="row justify-content-center">
-					<div class="col-lg-12">
-						<div class="testimonial-slider-wrap text-center">
-
-							<div id="testimonial-nav">
-								<span class="prev" data-controls="prev"><span class="fa fa-chevron-left"></span></span>
-								<span class="next" data-controls="next"><span class="fa fa-chevron-right"></span></span>
-							</div>
-
-							<div class="testimonial-slider">
-								
-								<div class="item">
-									<div class="row justify-content-center">
-										<div class="col-lg-8 mx-auto">
-
-											<div class="testimonial-block text-center">
-												<blockquote class="mb-5">
-													<p>&ldquo;Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.&rdquo;</p>
-												</blockquote>
-
-												<div class="author-info">
-													<div class="author-pic">
-														<img src="../static/images/person-1.png" alt="Maria Jones" class="img-fluid">
-													</div>
-													<h3 class="font-weight-bold">Maria Jones</h3>
-													<span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
-												</div>
-											</div>
-
-										</div>
-									</div>
-								</div> 
-
-								<div class="item">
-									<div class="row justify-content-center">
-										<div class="col-lg-8 mx-auto">
-
-											<div class="testimonial-block text-center">
-												<blockquote class="mb-5">
-													<p>&ldquo;Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.&rdquo;</p>
-												</blockquote>
-
-												<div class="author-info">
-													<div class="author-pic">
-														<img src="../static/images/person-1.png" alt="Maria Jones" class="img-fluid">
-													</div>
-													<h3 class="font-weight-bold">Maria Jones</h3>
-													<span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
-												</div>
-											</div>
-
-										</div>
-									</div>
-								</div> 
-
-
-								<div class="item">
-									<div class="row justify-content-center">
-										<div class="col-lg-8 mx-auto">
-
-											<div class="testimonial-block text-center">
-												<blockquote class="mb-5">
-													<p>&ldquo;Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.&rdquo;</p>
-												</blockquote>
-
-												<div class="author-info">
-													<div class="author-pic">
-														<img src="../static/images/person-1.png" alt="Maria Jones" class="img-fluid">
-													</div>
-													<h3 class="font-weight-bold">Maria Jones</h3>
-													<span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
-												</div>
-											</div>
-
-										</div>
-									</div>
-								</div>
-
-							</div>
-
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>-->
-		<!-- End Testimonial Slider -->
 
 
 

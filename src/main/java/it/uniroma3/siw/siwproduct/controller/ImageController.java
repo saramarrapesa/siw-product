@@ -54,7 +54,7 @@ public class ImageController {
 		prodotto.addImages(immagini);
 		this.prodottoService.saveProdotto(prodotto);
 		model.addAttribute("prodotto", prodotto);
-		return "/admin/formUpdateProdotto.html";
+		return "/admin/formUpdateProdotto";
 
 	}
 
@@ -67,7 +67,7 @@ public class ImageController {
 		this.imageService.deleteImage(image);
 		this.prodottoService.saveProdotto(prodotto);
 		model.addAttribute("prodotto", prodotto);
-		return "/admin/formUpdateProdotto.html";
+		return "/admin/formUpdateProdotto";
 	}
 
 }

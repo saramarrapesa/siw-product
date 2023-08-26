@@ -1,11 +1,14 @@
 package it.uniroma3.siw.siwproduct.service;
 
+import java.io.IOException;
 import java.util.*;
 
 import it.uniroma3.siw.siwproduct.model.Fornitore;
+import it.uniroma3.siw.siwproduct.model.Image;
 import it.uniroma3.siw.siwproduct.model.Prodotto;
 import it.uniroma3.siw.siwproduct.model.Review;
 import it.uniroma3.siw.siwproduct.repository.FornitoreRepository;
+import it.uniroma3.siw.siwproduct.repository.ImageRepository;
 import it.uniroma3.siw.siwproduct.repository.ProdottoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,7 @@ import org.springframework.ui.Model;
 
 
 import jakarta.transaction.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ProdottoService {
@@ -22,11 +26,21 @@ public class ProdottoService {
 	
 	@Autowired
 	private FornitoreRepository fornitoreRepository;
+
+	@Autowired
+	private ImageRepository imageRepository;
 	
 	
 	//metodo per inserire un nuovo prodotto
 	@Transactional
-	public Prodotto createNewProdotto(Prodotto p) {
+	public Prodotto createNewProdotto(Prodotto p , MultipartFile[] multipartFile) {
+		try{
+			Set<Image> immagini = new HashSet<>();
+			for (MultipartFile file : multipartFile){
+				immagini.add(imageRepository.save(new Image(file.getBytes())));
+			} p.setImages(immagini);
+		}catch (IOException e){}
+
 		return this.prodottoRepository.save(p);
 	}
 	
