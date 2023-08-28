@@ -1,292 +1,66 @@
-<!-- /*
-* Bootstrap 5
-* Template Name: Furni
-* Template Author: Untree.co
-* Template URI: https://untree.co/
-* License: https://creativecommons.org/licenses/by/3.0/
-*/ -->
 <!doctype html>
-<!--suppress JSUnresolvedLibraryURL -->
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="author" content="Untree.co">
-  <link rel="shortcut icon" href="favicon.png">
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <meta name="description" content="" />
-  <meta name="keywords" content="bootstrap, bootstrap4" />
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-		<!-- Bootstrap CSS -->
-		<link href="../static/css/bootstrap.min.css" rel="stylesheet">
-	    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-		<link href="../static/css/tiny-slider.css" rel="stylesheet">
-		<link href="../static/css/style.css" rel="stylesheet">
-	    <link rel="stylesheet" href="../static/scss/style.scss">
-
-		<title> Siw Product </title>
+	<title>Hello, world!</title>
 </head>
+<body >
 
-	<body>
-
-		<!-- Start Header/Navigation -->
-		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
-
-			<div class="container">
-				<a class="navbar-brand" href="/index">FiloSOFA<span>.</span></a>
-
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-
-				<div class="collapse navbar-collapse" id="navbarsFurni">
-					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-						<li class="nav-item active">
-							<a class="nav-link" href="/">Home</a>
-						</li>
-					</ul>
-
-					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-						<li>
-							<div th:if="${userDetails.username}">
-								<span th:text="${userDetails.username}"></span>
-								<a class="nav-link" href="/logout"> Log out <img src="../static/images/user.svg" alt=""></a>
-							</div>
-							<div th:unless="${userDetails}">
-								<a class="nav-link" href="/login"> Login <img src="../static/images/user.svg"
-																			  alt=""></a>
-							</div>
-						</li>
-					</ul>
+<nav class="navbar  navbar-expand-lg navbar-dark bg-dark ">
+	<a class="navbar-brand" th:href="@{/}">SIW-PRODUCT</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarNavDropdown">
+		<ul class="navbar-nav">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Catalogo
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+					<a class="dropdown-item" th:href="@{prodotti}">Prodotti</a>
+					<a class="dropdown-item" th:href="@{fornitori}">Fornitori</a>
 				</div>
-			</div>
-				
-		</nav>
-		<!-- End Header/Navigation -->
-
-		<!-- Start Hero Section -->
-			<div class="hero">
-				<div class="container">
-					<div class="row justify-content-between">
-						<div class="col-lg-5">
-							<div class="intro-excerpt">
-								<h1>Modern Interior <span class="d-block">Design Studio</span></h1>
-								<p class="mb-4">Benvenuto sul nostro sito. Pronto ad esplorare il nostro catalogo? </p>
-								<p><a href="/prodotti" class="btn btn-secondary me-2">Prodotti</a><a href="/fornitori" class="btn btn-white-outline">Fornitori</a></p>
-							</div>
-						</div>
-						<div class="col-lg-7">
-							<div class="hero-img-wrap">
-								<img src="../static/images/couch.png" class="img-fluid" alt="">
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		<!-- End Hero Section -->
-
-		<!-- Start Product Section -->
-		<div class="product-section">
-			<div class="container">
-				<div class="row">
-
-					<!-- Start Column 1 -->
-					<div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
-						<h2 class="mb-4 section-title">Crafted with excellent material.</h2>
-						<p><a href="/prodotti" class="btn">Prodotti</a></p>
-					</div> 
-					<!-- End Column 1 -->
-
-					<!-- Start Column 2 -->
-					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-						<a class="product-item" href="/admin/indexProdotto">
-							<img src="../static/images/product-1.png" class="img-fluid product-thumbnail" alt=" vuoto">
-							<h3 class="product-title">Nordic Chair</h3>
-							<strong class="product-price">$50.00</strong>
-
-						</a>
-					</div> 
-					<!-- End Column 2 -->
-
-					<!-- Start Column 3 -->
-					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-						<a class="product-item" href="admin/indexProdotto.html">
-							<img src="../static/images/product-2.png" class="img-fluid product-thumbnail" alt="">
-							<h3 class="product-title">Kruzo Aero Chair</h3>
-							<strong class="product-price">$78.00</strong>
-
-						</a>
-					</div>
-					<!-- End Column 3 -->
-
-					<!-- Start Column 4 -->
-					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-						<a class="product-item" href="/admin/indexProdotto">
-							<img src="../static/images/product-3.png" class="img-fluid product-thumbnail" alt="">
-							<h3 class="product-title">Ergonomic Chair</h3>
-							<strong class="product-price">$43.00</strong>
-
-						</a>
-					</div>
-					<!-- End Column 4 -->
-
-				</div>
-			</div>
+			</li>
+		</ul>
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+			<ul class="navbar-nav ms-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{registerForm}">Sign Up</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{loginForm}">Log In</a></li>
+			</ul>
 		</div>
-		<!-- End Product Section -->
-
-		<!-- Start Why Choose Us Section -->
-		<div class="why-choose-section">
-			<div class="container">
-				<div class="row justify-content-between">
-					<div class="col-lg-6">
-						<h2 class="section-title">Why Choose Us</h2>
-
-						<div class="row my-5">
-							<div class="col-6 col-md-6">
-								<div class="feature">
-									<div class="icon">
-										<img src="../static/images/truck.svg" alt="Image" class="imf-fluid">
-									</div>
-									<h3>Fast &amp; Free Shipping</h3>
-									<p>I nostri fornitori arrivano ovunque e rispettano le scadenze</p>
-								</div>
-							</div>
-
-							<div class="col-6 col-md-6">
-								<div class="feature">
-									<div class="icon">
-										<img src="../static/images/bag.svg" alt="Image" class="imf-fluid">
-									</div>
-									<h3>Quality</h3>
-									<p>Iprodotti sono realizzati con le migliori materie prime </p>
-								</div>
-							</div>
-
-							<div class="col-6 col-md-6">
-								<div class="feature">
-									<div class="icon">
-										<img src="../static/images/support.svg" alt="Image" class="imf-fluid">
-									</div>
-									<h3>24/7 Support</h3>
-									<p>Per qualsiasi problema siamo a disposizione 24/7</p>
-								</div>
-							</div>
-
-							<div class="col-6 col-md-6">
-								<div class="feature">
-									<div class="icon">
-										<img src="../static/images/return.svg" alt="Image" class="imf-fluid">
-									</div>
-									<h3>Hassle Free Returns</h3>
-									<p>Se il prodotto non rispecchia determinate specifiche provvediamo noi al cambio</p>
-								</div>
-							</div>
-
-						</div>
-					</div>
-
-					<div class="col-lg-5">
-						<div class="img-wrap">
-							<img src="../static/images/why-choose-us-img.jpg" alt="Image" class="img-fluid">
-						</div>
-					</div>
-
-				</div>
-			</div>
+	</div>
+</nav>
+<br>
+<br>
+<!-- Header-->
+<header class="masthead text-center text-bg-dark">
+	<div class="masthead-content">
+		<div class="container px-5">
+			<h1 class="masthead-heading mb-0">BENVENUTO SU SIW PRODUCT</h1>
+			<h2 class="masthead-subheading mb-0">scegli tra le opzioni del nostro catalogo </h2>
+			<a class="btn btn-primary btn-xl rounded-pill mt-5" th:href="@{prodotti}">Prodotti</a>
+			<a class="btn btn-primary btn-xl rounded-pill mt-5" th:href="@{fornitori}">Fornitori</a>
 		</div>
+	</div>
+</header>
+<!-- Footer-->
+<footer class="py-5 bg-black">
+	<div class="container px-5"><p class="m-0 text-center text-white small">Copyright &copy; Your Website 2023</p></div>
+</footer>
 
 
-
-		<!-- Start Footer Section -->
-		<footer class="footer-section">
-			<div class="container relative">
-
-				<div class="sofa-img">
-					<img src="../static/images/sofa.png" alt="Image" class="img-fluid">
-				</div>
-
-				<div class="row">
-					<div class="col-lg-8">
-						<div class="subscription-form">
-							<h3 class="d-flex align-items-center"><span class="me-1"><img src="../static/images/envelope-outline.svg" alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
-
-							<form action="#" class="row g-3">
-								<div class="col-auto">
-									<label>
-										<input type="text" class="form-control" placeholder="Enter your name">
-									</label>
-								</div>
-								<div class="col-auto">
-									<label>
-										<input type="email" class="form-control" placeholder="Enter your email">
-									</label>
-								</div>
-								<div class="col-auto">
-									<button class="btn btn-primary">
-										<span class="fa fa-paper-plane"></span>
-									</button>
-								</div>
-							</form>
-
-						</div>
-					</div>
-				</div>
-
-				<div class="row g-5 mb-5">
-					<div class="col-lg-4">
-						<div class="mb-4 footer-logo-wrap"><a href="/index" class="footer-logo">FiloSOFA<span>.</span></a></div>
-
-
-						<ul class="list-unstyled custom-social">
-							<li><a href="https://www.facebook.com/poltronesofaspa/?locale=it_IT"><span class="fa fa-brands fa-facebook-f"></span></a></li>
-							<li><a href="https://twitter.com/poltronesofa"><span class="fa fa-brands fa-twitter"></span></a></li>
-							<li><a href="https://www.instagram.com/poltronesofa_official/?hl=it"><span class="fa fa-brands fa-instagram"></span></a></li>
-							<li><a href="https://it.linkedin.com/company/poltronesofa"><span class="fa fa-brands fa-linkedin"></span></a></li>
-						</ul>
-					</div>
-
-					<div class="col-lg-8">
-						<div class="row links-wrap">
-							<div class="col-6 col-sm-6 col-md-3">
-								<ul class="list-unstyled">
-									<li><a href="/index">Home</a></li>
-									<li><a href="/prodotti">Prodotti</a></li>
-									<li><a href="/fornitori">Fornitori</a></li>
-								</ul>
-							</div>
-
-						</div>
-					</div>
-
-				</div>
-
-				<div class="border-top copyright">
-					<div class="row pt-4">
-						<div class="col-lg-6">
-							<p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a>Sara Marrapesa</a>
-            </p>
-						</div>
-
-						<div class="col-lg-6 text-center text-lg-end">
-							<ul class="list-unstyled d-inline-flex ms-auto">
-								<li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
-								<li><a href="#">Privacy Policy</a></li>
-							</ul>
-						</div>
-
-					</div>
-				</div>
-
-			</div>
-		</footer>
-		<!-- End Footer Section -->	
-
-
-		<script src="../static/js/bootstrap.bundle.min.js"></script>
-		<script src="../static/js/tiny-slider.js"></script>
-		<script src="../static/js/custom.js"></script>
-	</body>
-
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
 </html>

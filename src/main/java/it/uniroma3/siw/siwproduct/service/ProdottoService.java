@@ -51,10 +51,9 @@ public class ProdottoService {
 	}
 	//metodo per rimuovere un prodotto
 	@Transactional
-	public void deleteProdotto(Prodotto prodotto) {
-		this.prodottoRepository.delete(prodotto);
+	public void deleteProdotto(Long prodottoId) {
+		this.prodottoRepository.deleteById(prodottoId);
 	}
-	
 	//metodo per trovare uno specifico prodotto 
 	@Transactional
 	public Prodotto findProdottoById(Long prodottoId) {
@@ -83,6 +82,17 @@ public class ProdottoService {
 		return prodotto;
 		
 	}
+
+	//metodo per vedere l'elenco dei fornitori di un prodotto
+
+	public List<Fornitore> elencoFornitoriProdottoById(Long prodottoId){
+		Prodotto prodotto = this.prodottoRepository.findById(prodottoId).orElse(null);
+		List<Fornitore> elencoFornitoriProdotto = new ArrayList<>();
+		if(prodotto!=null){
+			elencoFornitoriProdotto= prodotto.getFornitori();
+		}
+		return elencoFornitoriProdotto;
+	}
 	
 	//metodo per rimuovere un fornitore dalla lista dei fornitori di un prodotto
 	public Prodotto deleteFornitoreFromProdotto(Long prodottoId, Long fornitoreId) {
@@ -95,7 +105,8 @@ public class ProdottoService {
 		}
 		return prodotto;
 	}
-	
+
+
 	public Prodotto findProdottoByNome(String nome) {
 		return this.prodottoRepository.findByNome(nome).get(0);
 	}

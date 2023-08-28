@@ -1,6 +1,7 @@
 package it.uniroma3.siw.siwproduct.controller;
 
 import it.uniroma3.siw.siwproduct.model.Fornitore;
+import it.uniroma3.siw.siwproduct.model.Prodotto;
 import it.uniroma3.siw.siwproduct.service.FornitoreService;
 import it.uniroma3.siw.siwproduct.validator.FornitoreValidator;
 import jakarta.validation.Valid;
@@ -26,35 +27,19 @@ public class FornitoreController {
 	
 	@Autowired
 	private FornitoreValidator fornitoreValidator;
-	
-	@GetMapping(value="/admin/formNewFornitore")
-	public String formNewFornitore(Model model) {
-		model.addAttribute("fornitore", new Fornitore());
-		return "admin/formNewFornitore";
-	}
-	
-	@GetMapping(value="/admin/indexFornitore")
-	public String indexFornitore() {
-		return "admin/indexFornitore";
-	}
-	
-	@PostMapping("/admin/fornitore")
-		public String newFornitore(@Valid @ModelAttribute("fornitore") Fornitore fornitore , BindingResult bindingResult , @RequestParam("fornitoreImage") MultipartFile multipartFile , Model model) throws IOException {
-		this.fornitoreValidator.validate(fornitore, bindingResult);
-		if(!bindingResult.hasErrors()) {
-			model.addAttribute("fornitore", this.fornitoreService.createNewFornitore(fornitore , multipartFile));
-			return "fornitore";
-		}else {
-			model.addAttribute("messaggioErrore", "Questo fornitore esiste già");
-			return "admin/formNewFornitore";
 
-		}
-		
+
+	//metodo per visualizzare i fornitori
+	@GetMapping("/fornitori")
+	public String getFornitori(Model model) {
+		model.addAttribute("fornitori", this.fornitoreService.findAllFornitori());
+		return "fornitori";
 	}
-	
-	@GetMapping("/fornitore/{id}")
-	public String getFornitore(@PathVariable("id") Long id, Model model) {
-		Fornitore fornitore = this.fornitoreService.findFornitoreById(id);
+
+	//metodo per visualizzare un particolare fornitore in base a id
+	@GetMapping("/fornitore/{fornitoreId}")
+	public String getFornitore(@PathVariable("fornitoreId") Long fornitoreId, Model model) {
+		Fornitore fornitore = this.fornitoreService.findFornitoreById(fornitoreId);
 		if(fornitore!=null) {
 			model.addAttribute("fornitore", fornitore);
 			return "fornitore";
@@ -63,11 +48,72 @@ public class FornitoreController {
 			return "fornitoreError";
 		}
 	}
-	
-	@GetMapping("/fornitori")
-	public String getFornitori(Model model) {
-		model.addAttribute("fornitori", this.fornitoreService.findAllForniori());
-		return "fornitori";
+
+	//metodoto che visualizza tutti  i fornitori nella dashboard ddell'admin
+	@GetMapping(value="/admin/manageFornitori")
+	public String manageFornitore(Model model) {
+		model.addAttribute("fornitori", this.fornitoreService.findAllFornitori());
+		return "admin/manageFornitori";
 	}
+
+	@PostMapping("/admin/manageFornitori")
+	public String newFornitore(@Valid @ModelAttribute("fornitore") Fornitore fornitore , BindingResult bindingResult , @RequestParam("fornitoreImage") MultipartFile multipartFile , Model model) throws IOException {
+		this.fornitoreValidator.validate(fornitore, bindingResult);
+		if(!bindingResult.hasErrors()) {
+			model.addAttribute("fornitore", this.fornitoreService.createNewFornitore(fornitore , multipartFile));
+			return "admin/manageFornitori";
+		}else {
+			model.addAttribute("messaggioErrore", "Questo fornitore esiste già");
+			return "admin/formNewFornitore";
+
+		}
+
+	}
+	@GetMapping(value="/admin/formNewFornitore")
+	public String formNewFornitore(Model model) {
+		model.addAttribute("fornitore", new Fornitore());
+		return "admin/formNewFornitore";
+	}
+
+
+	//metodo per modificare un prodotto
+	@GetMapping(value="/admin/formUpdateFornitore/{fornitoreId}")
+	public String formUpdateFornitore(@PathVariable("fornitoreId") Long fornitoreId, Model model) {
+		Fornitore fornitore = this.fornitoreService.findFornitoreById(fornitoreId);
+		if(fornitore!=null) {
+			model.addAttribute("fornitore", fornitoreService.findFornitoreById(fornitoreId));
+			return "admin/formUpdateFornitore";
+
+		}else {
+			return "fornitoreError";
+		}
+	}
+
+	//metodo che modifica un prodotto
+	@PostMapping("/admin/manageFornitori/{fornitoreId}")
+	public String updateFornitore(@PathVariable("fornitoreId") Long fornitoreId , @ModelAttribute("fornitore") Fornitore fornitore){
+		//get prodotto from database by id
+		Fornitore exisistinFornitore = this.fornitoreService.findFornitoreById(fornitoreId);
+		exisistinFornitore.setId(fornitoreId);
+		exisistinFornitore.setNome(fornitore.getNome());
+		exisistinFornitore.setAddress(fornitore.getAddress());
+		exisistinFornitore.setEmail(fornitore.getEmail());
+
+		//save updated product Object
+		this.fornitoreService.updateFornitore(fornitore);
+		return "admin/manageProdotti";
+	}
+
+	//metodo per eliminare un prodotto
+	@GetMapping(value="/admin/manageFornitori/{fornitoreId}")
+	public String RemoveFornitore(@PathVariable("fornitoreId") Long fornitoreId) {
+		this.fornitoreService.deleteFornitore(fornitoreId);
+		return  "admin/manageFornitori";
+	}
+
+	
+
+	
+
 
 }

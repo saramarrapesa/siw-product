@@ -25,7 +25,6 @@ public class FornitoreService {
 	
 	@Transactional
 	public Fornitore createNewFornitore(Fornitore fornitore, MultipartFile multipartFile) throws IOException {
-
 		try{
 			fornitore.setPicture(imageRepository.save(new Image(multipartFile.getBytes())));
 		}
@@ -33,23 +32,29 @@ public class FornitoreService {
 		this.fornitoreRepository.save(fornitore);
 		return fornitore;
 	}
-	
-	@Transactional
-	public Fornitore saveFornitore (Fornitore fornitore) {
-		return this.fornitoreRepository.save(fornitore);
-	}
-	
-	public Iterable<Fornitore> findAllForniori(){
+
+	public Iterable<Fornitore> findAllFornitori(){
 		return this.fornitoreRepository.findAll();
 	}
 	
 	@Transactional
-	public List<Fornitore> findFornitoriInProdotto(Long prodottoId){
+	public List<Fornitore> findFornitoriNotInProdotto(Long prodottoId){
 		List<Fornitore> fornitoriToAdd = new ArrayList<>();
 		for(Fornitore f : this.fornitoreRepository.findFornitoriNotInProdotto(prodottoId)) {
 			fornitoriToAdd.add(f);
 		}
 		return fornitoriToAdd;
+	}
+
+	//metodo per aggiornare un prodotto
+	@Transactional
+	public void updateFornitore(Fornitore fornitore) {
+		this.fornitoreRepository.save(fornitore);
+	}
+	//metodo per rimuovere un prodotto
+	@Transactional
+	public void deleteFornitore(Long fornitoreId) {
+		this.fornitoreRepository.deleteById(fornitoreId);
 	}
 	
 	public Fornitore findFornitoreById(Long id) {

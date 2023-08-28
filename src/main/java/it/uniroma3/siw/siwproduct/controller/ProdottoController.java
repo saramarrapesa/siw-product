@@ -36,101 +36,22 @@ public class ProdottoController {
 
 	@Autowired
 	public GlobalController globalController;
-	
-	@GetMapping(value="/admin/formNewProdotto")
-	public String formNewProdotto(Model model) {
-		model.addAttribute("prodotto", new Prodotto());
-		return "admin/formNewProdotto";
-	}
-	
-	@GetMapping(value="/admin/formUpdateProdotto/{prodottoId}")
-	public String formUpdateProdotto(@PathVariable("prodottoId") Long prodottoId, Model model) {
-		Prodotto prodotto = this.prodottoService.findProdottoById(prodottoId);
-		if(prodotto!=null) {
-			model.addAttribute("prodotto", prodottoService.findProdottoById(prodottoId));
-			return "admin/formUpdateProdotto";
-		
-		}else {
-			return "prodottoError";
-		}
-	}
 
-	@GetMapping(value = "/admin/indexProdotto")
-	public String indexProdotto(){
-		return "admin/indexProdotto";
-	}
-	
-	@GetMapping(value="/admin/manageProdotti")
-	public String manageProdotto(Model model) {
+
+
+	//metodo per visualizzare tutti i prodotti
+
+	@GetMapping("/prodotti")
+	public  String getProdotti(Model model){
 		model.addAttribute("prodotti", this.prodottoService.findAllProdotti());
-		return "admin/manageProdotti";
-	}
-	
-	@GetMapping(value="admin/addFornitoreToProdotto/{fornitoreId}/{prodottoId}")
-	public String addFornitoreToProdotto(@PathVariable("fornitoreId")Long fornitoreId , @PathVariable("prodottoId") Long prodottoId, Model model) {
-		Prodotto prodotto = this.prodottoService.addFornitoreToProdotto(fornitoreId, prodottoId);
-		if(prodotto!=null) {
-			model.addAttribute("prodotto", prodotto);
-			return "admin/formUpdateProdotto";
-		}
-		else {
-			return "prodottoError";
-		}
+		return "prodotti";
 	}
 
-	@GetMapping(value = "/admin/removeFornitoreToProdotto/{fornitoreId}/{prodottoId}")
-	public String removeFornitoreToProdotto(@PathVariable("prodottoId") Long prodottoId , @PathVariable("fornitoreId") Long fornitoreId, Model model ){
-		Prodotto prodotto = this.prodottoService.deleteFornitoreFromProdotto(prodottoId,fornitoreId);
-		if(prodotto!=null){
-			List<Fornitore> fornitoriToAdd= fornitoreService.findFornitoriInProdotto(prodottoId);
-			model.addAttribute("prodotto",prodotto);
-			model.addAttribute("fornitoriToAdd" , fornitoriToAdd);
-			return "admin/fornitoriToAdd";
-		}
-		else{
-			return "prodottoError";
-		}
-	}
-	
-	@GetMapping(value= "/admin/addFornitore/{fornitoreId}")
-	public String addFornitore(@PathVariable("fornitoreId") Long fornitoreId, Model model) {
-		model.addAttribute("fornitori", this.fornitoreService.findAllForniori() );
-		Prodotto prodotto = this.prodottoService.findProdottoById(fornitoreId);
-		if(prodotto!=null) {
-			model.addAttribute("prodotto", prodotto);
-			return "admin/fornitoriToAdd";
-		}else {
-			return "prodottoError";
-		}
-	}
-	
-	@GetMapping("/formSearchProdotti")
-	public String formSearchProdotti() {
+	//metodo per visualizzare un particolare prodotto in base all'id
 
-		return "formSearchProdotti";
-	}
-	
-	@PostMapping("/searchProdotti")
-	public String searchProdotti(Model model , @RequestParam String nome) {
-		model.addAttribute("prodotti", this.prodottoService.findProdottoByNome(nome));
-		return "foundProdotti";
-	}
-	
-	@PostMapping("/admin/prodotto")
-	public String newProdotto(@Valid @ModelAttribute("prodotto")Prodotto prodotto , BindingResult bindingResult , @RequestParam("prodottoImage") MultipartFile[] multipartFile, Model model) {
-		this.prodottoValidator.validate(prodotto, bindingResult);
-		if(!bindingResult.hasErrors()) {
-			model.addAttribute("prodotto", this.prodottoService.createNewProdotto(prodotto, multipartFile));
-			return "prodotto";
-		}else {
-			return "admin/formNewProdotto";
-		}
-		
-	}
-	
-	@GetMapping("/prodotto/{id}")
-	public String getProdotto(@PathVariable("id") Long id, Model model) {
-		Prodotto prodotto = this.prodottoService.findProdottoById(id);
+	@GetMapping("/prodotto/{prodottoId}")
+	public String getProdotto(@PathVariable("prodottoId") Long prodottoId, Model model) {
+		Prodotto prodotto = this.prodottoService.findProdottoById(prodottoId);
 		if(prodotto!=null) {
 			model.addAttribute("prodotto", prodotto);
 			model.addAttribute("review", new Review());
@@ -147,15 +68,129 @@ public class ProdottoController {
 		}
 	}
 
-	@GetMapping("/prodotti")
-	public  String getProdotti(Model model){
+
+	//COMPITI DELL'ADMIN
+
+
+	//metodoto che visualizza tutti  i prodotti nella dashboard ddell'admin
+	@GetMapping(value="/admin/manageProdotti")
+	public String manageProdotto(Model model) {
 		model.addAttribute("prodotti", this.prodottoService.findAllProdotti());
-		return "prodotti";
+		return "admin/manageProdotti";
+	}
+
+	//metodo che crea un nuovo prodotto
+	@PostMapping("/admin/manageProdotti")
+	public String newProdotto(@Valid @ModelAttribute("prodotto")Prodotto prodotto , BindingResult bindingResult , @RequestParam("prodottoImage") MultipartFile[] multipartFile, Model model) {
+		this.prodottoValidator.validate(prodotto, bindingResult);
+		if(!bindingResult.hasErrors()) {
+			model.addAttribute("prodotto", this.prodottoService.createNewProdotto(prodotto, multipartFile));
+			return "admin/manageProdotti";
+		}else {
+			model.addAttribute("messaggioErrore", "Questo prodotto esiste già");
+			return "admin/formNewProdotto";
+		}
+
+	}
+
+	//metodo per creare un nuovo prodotto
+	@GetMapping(value="/admin/formNewProdotto")
+	public String formNewProdotto(Model model) {
+		model.addAttribute("prodotto", new Prodotto());
+		return "admin/formNewProdotto";
+	}
+
+
+
+
+	//metodo per modificare un prodotto
+	@GetMapping(value="/admin/formUpdateProdotto/{prodottoId}")
+	public String formUpdateProdotto(@PathVariable("prodottoId") Long prodottoId, Model model) {
+		Prodotto prodotto = this.prodottoService.findProdottoById(prodottoId);
+		if(prodotto!=null) {
+			model.addAttribute("prodotto", prodottoService.findProdottoById(prodottoId));
+			return "admin/formUpdateProdotto";
+		
+		}else {
+			return "prodottoError";
+		}
+	}
+
+	//metodo che modifica un prodotto
+	@PostMapping("/admin/managetProdotti/{prodottoId}")
+	public String updateProdotto(@PathVariable("prodottoId") Long prodottoId , @ModelAttribute("prodotto") Prodotto prodotto){
+		//get prodotto from database by id
+		Prodotto exisistinProdotto = this.prodottoService.findProdottoById(prodottoId);
+		exisistinProdotto.setId(prodottoId);
+		exisistinProdotto.setNome(prodotto.getNome());
+		exisistinProdotto.setDescrizione(prodotto.getDescrizione());
+		exisistinProdotto.setPrezzo(prodotto.getPrezzo());
+
+		//save updated product Object
+		this.prodottoService.updateProdotto(exisistinProdotto);
+		return "admin/manageProdotti";
+	}
+
+	//metodo per eliminare un prodotto
+	@GetMapping(value="/admin/manageProdotti/{prodottoId}")
+	public String RemoveProdotto(@PathVariable("prodottoId") Long prodottoId, Model model) {
+		this.prodottoService.deleteProdotto(prodottoId);
+		return  "admin/manageProdotti";
+	}
+
+
+	/*//metodo per visualizzare tutti i fornitori di un prodotto
+	@GetMapping(value = "/admin/manageProdotti/{prodottoId}")
+	public String ElencoFornitoriProdotto (@PathVariable("prodottoId") Long prodottoId, Model model){
+		model.addAttribute("elencoFornitori", this.prodottoService.elencoFornitoriProdottoById(prodottoId));
+		return "/admin/elencoFornitori";
+
+	}*/
+
+	//metodo per aggiungere un fornitore all'elenco di fornitori di un prodotto
+	@GetMapping(value="admin/formNewFornitore/{fornitoreId}/{prodottoId}")
+	public String addFornitoreToProdotto(@PathVariable("fornitoreId")Long fornitoreId , @PathVariable("prodottoId") Long prodottoId, Model model) {
+		Prodotto prodotto = this.prodottoService.addFornitoreToProdotto(fornitoreId, prodottoId);
+		if(prodotto!=null) {
+			model.addAttribute("prodotto", prodotto);
+			return "admin/elencoFornitori";
+		}
+		else {
+			return "prodottoError";
+		}
+	}
+
+	//metodo per rimuovere un fornitore dall'elenco di fornitori di un prodotto
+
+	@GetMapping(value = "/admin/elencoFornitori/{fornitoreId}/{prodottoId}")
+	public String removeFornitoreToProdotto(@PathVariable("prodottoId") Long prodottoId , @PathVariable("fornitoreId") Long fornitoreId, Model model ){
+		Prodotto prodotto = this.prodottoService.deleteFornitoreFromProdotto(prodottoId,fornitoreId);
+		if(prodotto!=null){
+			List<Fornitore> fornitoriToAdd= fornitoreService.findFornitoriNotInProdotto(prodottoId);
+			model.addAttribute("prodotto",prodotto);
+			model.addAttribute("fornitoriToAdd" , fornitoriToAdd);
+			return "admin/elencoFornitori";
+		}
+		else{
+			return "prodottoError";
+		}
+	}
+	
+	@GetMapping(value= "/admin/addFornitore/{fornitoreId}")
+	public String addFornitore(@PathVariable("fornitoreId") Long fornitoreId, Model model) {
+		model.addAttribute("fornitori", this.fornitoreService.findAllFornitori() );
+		Prodotto prodotto = this.prodottoService.findProdottoById(fornitoreId);
+		if(prodotto!=null) {
+			model.addAttribute("prodotto", prodotto);
+			return "admin/fornitoriToAdd";
+		}else {
+			return "prodottoError";
+		}
 	}
 
 	@GetMapping("admin/updateFornitori/{prodottoId}")
 	public String updateFornitori(@PathVariable("prodottoId") Long prodottoId, Model model){
-		List<Fornitore> fornitoriToAdd= this.fornitoreService.findFornitoriInProdotto(prodottoId);
+		List<Fornitore> fornitoriToAdd= this.fornitoreService.findFornitoriNotInProdotto(prodottoId);
 		model.addAttribute("fornitoriToAdd", fornitoriToAdd);
 		Prodotto prodotto= this.prodottoService.findProdottoById(prodottoId);
 		if(prodotto!=null){
@@ -165,6 +200,8 @@ public class ProdottoController {
 			return "prodottoError";
 		}
 	}
+
+
 	
 	
 	
