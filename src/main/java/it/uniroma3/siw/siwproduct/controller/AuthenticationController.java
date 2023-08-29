@@ -55,17 +55,13 @@ public class AuthenticationController {
 
 
 	@GetMapping(value = "/login") 
-	public String showLoginForm () {
+	public String showLoginForm (Model model) {
 		return "login";
 	}
 
-	@GetMapping(value = "/logout")
-	public String showLogoutForm () {
-		return "login";
-	}
 
 	@GetMapping(value = "/") 
-	public String index() {
+	public String index(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication instanceof AnonymousAuthenticationToken) {
 	        return "index";
@@ -81,7 +77,7 @@ public class AuthenticationController {
 	}
 		
     @GetMapping(value = "/success")
-    public String defaultAfterLogin() {
+    public String defaultAfterLogin(Model model) {
         
     	UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
