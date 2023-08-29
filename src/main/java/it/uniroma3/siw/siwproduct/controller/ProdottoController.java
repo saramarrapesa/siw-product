@@ -72,7 +72,7 @@ public class ProdottoController {
 	//COMPITI DELL'ADMIN
 
 
-	//metodoto che visualizza tutti  i prodotti nella dashboard ddell'admin
+	//metodoto che visualizza tutti i prodotti nella dashboard dell'admin
 	@GetMapping(value="/admin/manageProdotti")
 	public String manageProdotto(Model model) {
 		model.addAttribute("prodotti", this.prodottoService.findAllProdotti());
@@ -117,7 +117,7 @@ public class ProdottoController {
 	}
 
 	//metodo che modifica un prodotto
-	@PostMapping("/admin/managetProdotti/{prodottoId}")
+	@PostMapping("/admin/manageProdotti/{prodottoId}")
 	public String updateProdotto(@PathVariable("prodottoId") Long prodottoId , @ModelAttribute("prodotto") Prodotto prodotto){
 		//get prodotto from database by id
 		Prodotto exisistinProdotto = this.prodottoService.findProdottoById(prodottoId);

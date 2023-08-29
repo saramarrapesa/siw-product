@@ -1,7 +1,6 @@
 package it.uniroma3.siw.siwproduct.controller;
 
 import it.uniroma3.siw.siwproduct.model.Fornitore;
-import it.uniroma3.siw.siwproduct.model.Prodotto;
 import it.uniroma3.siw.siwproduct.service.FornitoreService;
 import it.uniroma3.siw.siwproduct.validator.FornitoreValidator;
 import jakarta.validation.Valid;
@@ -49,7 +48,7 @@ public class FornitoreController {
 		}
 	}
 
-	//metodoto che visualizza tutti  i fornitori nella dashboard ddell'admin
+	//metodoto che visualizza tutti i fornitori nella dashboard dell'admin
 	@GetMapping(value="/admin/manageFornitori")
 	public String manageFornitore(Model model) {
 		model.addAttribute("fornitori", this.fornitoreService.findAllFornitori());

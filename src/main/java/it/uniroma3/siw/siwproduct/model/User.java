@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 
 
 @Entity
-@Table(name = "users") // cambiamo nome perchè in postgres user e' una parola riservata
+@Table(name = "users") // cambiamo nome perchè in postgres user è una parola riservata
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
