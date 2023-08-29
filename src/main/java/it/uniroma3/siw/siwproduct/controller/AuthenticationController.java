@@ -32,7 +32,7 @@ public class AuthenticationController {
 	public String showRegisterForm (Model model) {
 		model.addAttribute("user", new User());
 		model.addAttribute("credentials", new Credentials());
-		return "registerForm";
+		return "register";
 	}
 
 	@PostMapping(value = { "/register" })
@@ -50,18 +50,18 @@ public class AuthenticationController {
 			model.addAttribute("user", user);
 			return "success";
 		}
-		return "registerForm";
+		return "register";
 	}
 
 
 	@GetMapping(value = "/login") 
 	public String showLoginForm () {
-		return "loginForm";
+		return "login";
 	}
 
 	@GetMapping(value = "/logout")
 	public String showLogoutForm () {
-		return "loginForm";
+		return "login";
 	}
 
 	@GetMapping(value = "/") 
