@@ -3,18 +3,14 @@ package it.uniroma3.siw.siwproduct.model;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name="FORNITORI")
 public class Fornitore {
 	
 	@Id
@@ -27,10 +23,7 @@ public class Fornitore {
 	@NotBlank
 	private String email;
 	
-	@OneToOne
-	private Image picture;
-	
-	@ManyToMany
+	@ManyToMany(mappedBy = "fornitori")
 	private List<Prodotto> prodotti;
 
 	public Long getId() {
@@ -90,12 +83,5 @@ public class Fornitore {
 		return Objects.equals(email, other.email) && Objects.equals(id, other.id);
 	}
 
-	public Image getPicture() {
-		return picture;
-	}
-
-	public void setPicture(Image picture) {
-		this.picture = picture;
-	}
 
 }

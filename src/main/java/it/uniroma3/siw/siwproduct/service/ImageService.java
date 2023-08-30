@@ -13,17 +13,11 @@ public class ImageService {
 	@Autowired
 	private ImageRepository imageRepository;
 
-	public Image findById(Long id) {
+	public void salvaImmagine(Image immagine){
+		this.imageRepository.save(immagine);
+	}
+
+	public Image findImmagineById (Long id){
 		return this.imageRepository.findById(id).get();
 	}
-	
-	public Image saveImage(Image image) {
-		return this.imageRepository.save(image);
-	}
-	
-
-	public void deleteImage(Image image) {
-		this.imageRepository.delete(image);
-
- }
 }

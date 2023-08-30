@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.validation.Valid;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -58,7 +59,7 @@ public class ProdottoController {
 			model.addAttribute("reviews", prodotto.getReviews());
 			model.addAttribute("hasReviews", !prodotto.getReviews().isEmpty());
 
-			if(this.globalController.getUser()!=null&& this.globalController.getUser().getUsername()!=null && this.prodottoService.alreadyRewied(prodotto.getReviews(),this.globalController.getUser().getUsername()))
+			if(this.globalController.getUser()!=null&& this.globalController.getUser().getUsername()!=null && this.prodottoService.alreadyReviewed(prodotto.getReviews(),this.globalController.getUser().getUsername()))
 				model.addAttribute("hasNotAlreadyCommented", true);
 			else
 				model.addAttribute("hasNotAlreadyCommented", false);
@@ -76,16 +77,17 @@ public class ProdottoController {
 	@GetMapping(value="/admin/manageProdotti")
 	public String manageProdotto(Model model) {
 		model.addAttribute("prodotti", this.prodottoService.findAllProdotti());
+		model.addAttribute("fornitori", this.fornitoreService.getAllFornitori());
 		return "admin/manageProdotti";
 	}
 
 	//metodo che crea un nuovo prodotto
 	@PostMapping("/admin/manageProdotti")
-	public String newProdotto(@Valid @ModelAttribute("prodotto")Prodotto prodotto , BindingResult bindingResult , @RequestParam("prodottoImage") MultipartFile[] multipartFile, Model model) {
+	public String newProdotto(@Valid @ModelAttribute("prodotto")Prodotto prodotto , BindingResult bindingResult , @RequestParam("prodottoImage") MultipartFile multipartFile, Model model) throws IOException {
 		this.prodottoValidator.validate(prodotto, bindingResult);
 		if(!bindingResult.hasErrors()) {
 			model.addAttribute("prodotto", this.prodottoService.createNewProdotto(prodotto, multipartFile));
-			return "admin/manageProdotti";
+			return "redirect:/admin/manageProdotti";
 		}else {
 			model.addAttribute("messaggioErrore", "Questo prodotto esiste già");
 			return "admin/formNewProdotto";
@@ -108,7 +110,7 @@ public class ProdottoController {
 	public String formUpdateProdotto(@PathVariable("prodottoId") Long prodottoId, Model model) {
 		Prodotto prodotto = this.prodottoService.findProdottoById(prodottoId);
 		if(prodotto!=null) {
-			model.addAttribute("prodotto", prodottoService.findProdottoById(prodottoId));
+			model.addAttribute("prodotto", prodotto);
 			return "admin/formUpdateProdotto";
 		
 		}else {
@@ -120,15 +122,17 @@ public class ProdottoController {
 	@PostMapping("/admin/manageProdotti/{prodottoId}")
 	public String updateProdotto(@PathVariable("prodottoId") Long prodottoId , @ModelAttribute("prodotto") Prodotto prodotto){
 		//get prodotto from database by id
-		Prodotto exisistinProdotto = this.prodottoService.findProdottoById(prodottoId);
+		Prodotto exisistinProdotto = new Prodotto();
+		exisistinProdotto = this.prodottoService.findProdottoById(prodottoId);
 		exisistinProdotto.setId(prodottoId);
 		exisistinProdotto.setNome(prodotto.getNome());
 		exisistinProdotto.setDescrizione(prodotto.getDescrizione());
 		exisistinProdotto.setPrezzo(prodotto.getPrezzo());
+		exisistinProdotto.setImage(prodotto.getImage());
 
 		//save updated product Object
-		this.prodottoService.updateProdotto(exisistinProdotto);
-		return "admin/manageProdotti";
+		this.prodottoService.saveProdotto(exisistinProdotto);
+		return "redirect:/admin/manageProdotti";
 	}
 
 	//metodo per eliminare un prodotto
@@ -139,13 +143,13 @@ public class ProdottoController {
 	}
 
 
-	/*//metodo per visualizzare tutti i fornitori di un prodotto
+	/*metodo per visualizzare tutti i fornitori di un prodotto
 	@GetMapping(value = "/admin/manageProdotti/{prodottoId}")
 	public String ElencoFornitoriProdotto (@PathVariable("prodottoId") Long prodottoId, Model model){
 		model.addAttribute("elencoFornitori", this.prodottoService.elencoFornitoriProdottoById(prodottoId));
 		return "/admin/elencoFornitori";
 
-	}*/
+	}
 
 	//metodo per aggiungere un fornitore all'elenco di fornitori di un prodotto
 	@GetMapping(value="admin/formNewFornitore/{fornitoreId}/{prodottoId}")
@@ -158,11 +162,10 @@ public class ProdottoController {
 		else {
 			return "prodottoError";
 		}
-	}
-
+	}*/
 	//metodo per rimuovere un fornitore dall'elenco di fornitori di un prodotto
 
-	@GetMapping(value = "/admin/elencoFornitori/{fornitoreId}/{prodottoId}")
+	/*@GetMapping(value = "/admin/elencoFornitori/{fornitoreId}/{prodottoId}")
 	public String removeFornitoreToProdotto(@PathVariable("prodottoId") Long prodottoId , @PathVariable("fornitoreId") Long fornitoreId, Model model ){
 		Prodotto prodotto = this.prodottoService.deleteFornitoreFromProdotto(prodottoId,fornitoreId);
 		if(prodotto!=null){
@@ -201,7 +204,7 @@ public class ProdottoController {
 		}
 	}
 
-
+*/
 	
 	
 	

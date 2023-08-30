@@ -17,6 +17,7 @@ public interface FornitoreRepository extends CrudRepository<Fornitore, Long> {
 			+ "from fornitori_prodotti "
 			+ "where fornitori_prodotti.starred_prodotti_id = :prodottoId)", nativeQuery=true)
 
-	public Iterable<Fornitore> findFornitoriNotInProdotto(@Param("prodottoId") Long prodottoId);
-	public boolean existsByNomeAndEmail(String nome, String email);
+	 Iterable<Fornitore> findFornitoriNotInProdotto(@Param("prodottoId") Long prodottoId);
+	 boolean existsByNomeAndEmail(String nome, String email);
+
 }

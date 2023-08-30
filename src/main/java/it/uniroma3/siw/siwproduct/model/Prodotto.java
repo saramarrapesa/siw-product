@@ -4,19 +4,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 
 @Entity
-@Table(name = "PRODOTTI")
 public class Prodotto {
 	
 	@Id
@@ -24,7 +16,6 @@ public class Prodotto {
 	private Long id;
 	
 
-	@Column(name= "nome_prodotto")
 	@NotBlank
 	private String nome;
 	
@@ -33,12 +24,12 @@ public class Prodotto {
 
 
 	private float prezzo;
-	
-	@OneToMany
-    private Set<Image> images;
+
+	@OneToOne
+    private Image image;
 
 	
-	@ManyToMany(mappedBy="prodotti")
+	@ManyToMany
 	private List<Fornitore> fornitori;
 	
 	@OneToMany
@@ -110,16 +101,14 @@ public class Prodotto {
 		return Objects.equals(id, other.id) && Objects.equals(nome, other.nome);
 	}
 
-	public Set<Image> getImages() {
-		return images;
+	public Image getImage() {
+		return image;
 	}
 
-	public void setImages(Set<Image> images) {
-		this.images = images;
+	public void setImage(Image image) {
+		this.image = image;
 	}
 	
-	 public void addImages(Set<Image> image) {
-     	this.images.addAll(image);
-     }
+
 
 }

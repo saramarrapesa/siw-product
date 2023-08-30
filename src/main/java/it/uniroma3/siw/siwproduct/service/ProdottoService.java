@@ -29,32 +29,24 @@ public class ProdottoService {
 
 	@Autowired
 	private ImageRepository imageRepository;
-	
-	
-	//metodo per inserire un nuovo prodotto
-	@Transactional
-	public Prodotto createNewProdotto(Prodotto p , MultipartFile[] multipartFile) {
-		try{
-			Set<Image> immagini = new HashSet<>();
-			for (MultipartFile file : multipartFile){
-				immagini.add(imageRepository.save(new Image(file.getBytes())));
-			} p.setImages(immagini);
-		}catch (IOException e){}
 
-		return this.prodottoRepository.save(p);
+	@Transactional
+	public Prodotto createNewProdotto(Prodotto prodotto , MultipartFile multipartFile) throws IOException {
+		Image imageProdotto = new Image(multipartFile.getBytes());
+		this.imageRepository.save(imageProdotto);
+		prodotto.setImage(imageProdotto);
+		return this.prodottoRepository.save(prodotto);
 	}
-	
-	//metodo per aggiornare un prodotto
 	@Transactional
 	public void updateProdotto(Prodotto prodotto) {
 		this.prodottoRepository.save(prodotto);
 	}
-	//metodo per rimuovere un prodotto
+
 	@Transactional
 	public void deleteProdotto(Long prodottoId) {
 		this.prodottoRepository.deleteById(prodottoId);
 	}
-	//metodo per trovare uno specifico prodotto 
+
 	@Transactional
 	public Prodotto findProdottoById(Long prodottoId) {
 		return this.prodottoRepository.findById(prodottoId).orElse(null);
@@ -64,7 +56,7 @@ public class ProdottoService {
 		return this.prodottoRepository.save(prodotto);
 	}
 	
-	//metodo per trovare tutti i prodotti
+
 	@Transactional
 	public Iterable<Prodotto> findAllProdotti(){
 		return this.prodottoRepository.findAll();
@@ -77,22 +69,12 @@ public class ProdottoService {
 		if(prodotto!=null&&fornitore!=null) {
 			List<Fornitore> fornitori= prodotto.getFornitori();
 			fornitori.add(fornitore);
-			this.prodottoRepository.save(prodotto);
+			prodotto.setFornitori(fornitori);
 		}
-		return prodotto;
+		return this.prodottoRepository.save(prodotto);
 		
 	}
 
-	//metodo per vedere l'elenco dei fornitori di un prodotto
-
-	public List<Fornitore> elencoFornitoriProdottoById(Long prodottoId){
-		Prodotto prodotto = this.prodottoRepository.findById(prodottoId).orElse(null);
-		List<Fornitore> elencoFornitoriProdotto = new ArrayList<>();
-		if(prodotto!=null){
-			elencoFornitoriProdotto= prodotto.getFornitori();
-		}
-		return elencoFornitoriProdotto;
-	}
 	
 	//metodo per rimuovere un fornitore dalla lista dei fornitori di un prodotto
 	public Prodotto deleteFornitoreFromProdotto(Long prodottoId, Long fornitoreId) {
@@ -101,16 +83,12 @@ public class ProdottoService {
 		if(prodotto!=null && fornitore!=null) {
 			List<Fornitore> fornitori = prodotto.getFornitori();
 			fornitori.remove(fornitore);
-			this.prodottoRepository.save(prodotto);
+			prodotto.setFornitori(fornitori);
 		}
-		return prodotto;
+		return this.prodottoRepository.save(prodotto);
 	}
 
 
-	public Prodotto findProdottoByNome(String nome) {
-		return this.prodottoRepository.findByNome(nome).get(0);
-	}
-	
 	//ogni utente può scrivere una recensione sul prodotto
 	
 	public String function (Model model , Prodotto prodotto , String username) {
@@ -120,20 +98,20 @@ public class ProdottoService {
 		fornitoriProdotto.remove(null);
 		model.addAttribute("fonitoriProdotto", fornitoriProdotto);
 		model.addAttribute("prodotto", prodotto);
-		if(username!=null && this.alreadyRewied(prodotto.getReviews(), username))
+		if(username!=null && this.alreadyReviewed(prodotto.getReviews(), username))
 			model.addAttribute("hasNotAlreadyCommented", false);
 		else
 			model.addAttribute("hasNotAlreadyCommented", true);
-		model.addAttribute("reviw", new Review());
-		model.addAttribute("reviws", prodotto.getReviews());
-		model.addAttribute("hasRviws", !prodotto.getReviews().isEmpty());
+		model.addAttribute("review", new Review());
+		model.addAttribute("reviews", prodotto.getReviews());
+		model.addAttribute("hasReviews", !prodotto.getReviews().isEmpty());
 		
 		return "prodotto.html";
 		}
 	
 	
 	@Transactional
-	public boolean alreadyRewied(Set<Review> reviews , String username){
+	public boolean alreadyReviewed(Set<Review> reviews , String username){
 		if(reviews != null) {
 			for(Review rev : reviews) {
 				if(rev.getUsername().equals(username))
@@ -142,7 +120,5 @@ public class ProdottoService {
 		}
 		return false;
 	}
-		
-	
 
 }

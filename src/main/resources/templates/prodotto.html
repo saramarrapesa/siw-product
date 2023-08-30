@@ -1,10 +1,138 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>One Page Wonder - Start Bootstrap Template</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/css/styles2.css" rel="stylesheet" />
+    <title>Siw Product</title>
+</head>
+<body >
+<nav class="navbar  navbar-expand-lg navbar-dark bg-dark ">
+    <div class="container px-5">
+        <a class="navbar-brand" th:href="@{/}">SIW-PRODUCT</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Catalogo
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" th:href="@{prodotti}">Prodotti</a>
+                        <a class="dropdown-item" th:href="@{fornitori}">Fornitori</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item" sec:authorize="isAnonymous()" ><a class="nav-link" th:href="@{register}">Sign Up</a></li>
+                    <li class="nav-item" sec:authorize="isAnonymous()" ><a class="nav-link" th:href="@{login}">Log In</a></li>
+                </ul>
+                <ul class="nav navbar-nav ">
+                    <li class="nav-item" sec:authorize="isAuthenticated()"><span class="text-light" sec:authentication="principal.username">User</span></li>
+                </ul>
+                <ul class="nav navbar-nav ">
+                    <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/logout}">Log out</a> </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- Product section-->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="" th:src="@{${'/productImages/' + prodotto.image}}" alt="..." /></div>
+            <div class="col-md-6">
+                <div class="small mb-1" th:text="${prodotto.id}"></div>
+                <h1 class="display-5 fw-bolder" th:text="${prodotto.nome}">Prodotto</h1>
+                <div class="fs-5 mb-5">
+                    &euro; <span class="text-decoration-none" th:text="${prodotto.prezzo}"></span>
+                </div>
+                <p class="lead" th:text="${prodotto.descrizione}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium at dolorem quidem modi. Nam sequi consequatur obcaecati excepturi alias magni, accusamus eius blanditiis delectus ipsam minima ea iste laborum vero?</p>
+            </div>
+        </div>
+    </div>
+</section>
+<br>
+<br>
+<br>
+<br>
+<!-- Reviews-->
+<h1 class="text-center">Reviews</h1>
+<div th:if="${hasReviews}">
+    <ul th:each="rev : ${reviews}">
+        <div>
+            <span class="grosso" th:text="${rev.username}"></span> <span> ha Scritto </span>
+        </div>
+        <div>
+            <span class="grosso">Title: </span> <span th:text="${rev.title}"></span>
+        </div>
+        <div>
+            <span class="grosso">Description: </span> <span th:text="${rev.description}"></span>
+        </div>
+        <div class="bottom-label">
+            <span class="grosso">Rating: </span>
+            <span>
+				        <i class="fas fa-star star-filled" th:each="star: ${#numbers.sequence(1, rev.rating)}"></i>
+				        <i class="far fa-star star-empty" th:each="star: ${#numbers.sequence(1, 5 - rev.rating)}"></i>
+				    </span>
+            <button sec:authorize="hasAuthority('ADMIN')">
+                <a th:href="'/admin/deleteReview/' + ${prodotto.id} + '/' + ${rev.id}">Delete</a>
+            </button>
+        </div>
+        <span>----------------</span>
+    </ul>
+</div>
+<div class="text-center" th:unless="${hasReviews}">
+    <h4>Per ora non ci sono recensioni .</h4>
+</div>
+<div th:if="${hasNotAlreadyCommented}" sec:authorize="hasAuthority('DEFAULT') || hasAuthority('ADMIN')">
+        <h1>Add a review</h1>
+        <form th:action="@{'/user/uploadReview/' + ${prodotto.id}}" method="post" th:object="${review}" class="form">
+            <div>
+                <span><input hidden th:value="${user}" th:field="${review.username}" /></span>
+            </div>
+            <div>
+                <label class="grosso">Ttile:</label>
+                <span><input type="text" th:field="${review.title}" /></span>
+            </div>
+            <div>
+                <label class="grosso">Description:</label>
+                <span><input type="text" th:field="${review.description}" /></span>
+            </div>
+            <div>
+                <label class="grosso">Rating:</label>
+                <span><input type="number" min="1" max="5" th:field="${review.rating}" /></span>
+            </div>
+            <div>
+                <span><button type="submit">Confirm</button></span>
+            </div>
+        </form>
+</div>
+
+<footer class="py-5 bg-dark">
+    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+</footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="../../../../../../../Downloads/startbootstrap-shop-item-gh-pages%20(2)/startbootstrap-shop-item-gh-pages/js/scripts.js"></script>
 </body>
 </html>

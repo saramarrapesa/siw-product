@@ -13,8 +13,6 @@ public class Image {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-	
-	
     private byte[] bytes;
 
     public Image() {}
