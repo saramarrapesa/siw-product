@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Create new Prodotto</title>
+    <title>Update Fornitore</title>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <!-- Brand -->
-    <a class="navbar-brand" href="#">Product Management System</a>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark" >
+    <a class="navbar-brand" th:href="@{manageFornitori}">Provider Management System</a>
 
     <!-- Toggler/collapsibe Button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -20,10 +19,10 @@
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/prodotti}">Product Management System</a>
+                <a class="nav-link" th:href="@{manageProdotti}">Product Management System</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/fornitori}">Provider Management System</a>
+                <a class="nav-link" th:href="@{manageFornitori}">Provider Management System</a>
             </li>
         </ul>
     </div>

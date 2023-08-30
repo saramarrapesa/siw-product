@@ -14,7 +14,7 @@
     <!-- Brand -->
     <a class="navbar-brand" href="#">Product Management System</a>
 
-    <!-- Toggler/collapsibe Button -->
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -72,7 +72,7 @@
                 <a th:href="@{formUpdateProdotto/{prodottoId}(prodottoId=${prodotto.id})}"
                    class="btn btn-primary"> Update</a>
 
-                <a th:href="@{formRemoveProdotto/{prodottoId}(prodottoId=${prodotto.id})}"
+                <a th:href="@{manageProdotti/{prodottoId}(prodottoId=${prodotto.id})}"
                    class="btn btn-danger"> Remove</a>
             </td>
 

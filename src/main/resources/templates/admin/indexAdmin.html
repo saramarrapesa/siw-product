@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <!--suppress JSUnresolvedLibraryURL -->
-<html lang="it" xmlns:th="www.thymeleaf.org" >
+<html lang="it" xmlns:th="http://www.thymeleaf.org" >
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="author" content="Untree.co">
-  <link rel="shortcut icon" href="favicon.png">
+
 
   <meta name="description" content="" />
   <meta name="keywords" content="bootstrap, bootstrap4" />
@@ -14,7 +14,7 @@
     Admin Dashboard
   </title>
 
-  <link href="../../static/css/flipper.css" rel="stylesheet">
+  <link href="/css/flipper.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 </head>
@@ -41,17 +41,19 @@
     </ul>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" th:href="@{registerForm}">Sign Up</a></li>
-        <li class="nav-item"><a class="nav-link" th:href="@{loginForm}">Log In</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{register}">Sign Up</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{login}">Log In</a></li>
       </ul>
     </div>
   </div>
 </nav>
 <br>
 <br>
-
-<h1>Benvenuto nella tua Dashboard</h1>
-
+<div class="container text-center">
+  <h1><strong>Benvenuto nella tua Dashboard</strong></h1>
+</div>
+<br>
+<br>
 
 <!-- le operazioni che l'admin può svolgere-->
 
@@ -61,25 +63,16 @@
 
     <div class="card_image" > <img src="../../static/images/prodotti.jpg" height="600" width="600" alt=""/> </div>
     <div class="card_title title-black">
-      <a href="indexProdotto.html">Gestisci prodotti</a>
+      <a th:href="@{manageProdotti}">Gestisci prodotti</a>
     </div>
   </div>
 
   <div class="card 2">
     <div class="card_image">
- <img src="../../static/images/recensioni2.jpg"   alt=""/>
-    </div>
-    <div class="card_title title-black">
-      <a href="indexProdotto.html">Gestisci recensioni</a>
-    </div>
-  </div>
-
-  <div class="card 3">
-    <div class="card_image">
       <img src="../../static/images/delivery.webp" alt=""/>
     </div>
     <div class="card_title title-black">
-      <a href="indexFornitore.html">Gestisci fornitori</a>
+      <a th:href="@{manageFornitori}">Gestisci fornitori</a>
     </div>
   </div>
 </div>
