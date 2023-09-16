@@ -1,0 +1,93 @@
+
+<!doctype html>
+<html lang="en" xmlns:th ="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/css/styles2.css" rel="stylesheet" />
+    <title> Prodotti </title>
+</head>
+<body>
+
+<nav class="navbar  navbar-expand-lg navbar-dark bg-dark ">
+    <div class="container px-5">
+        <a class="navbar-brand" th:href="@{manageProdotti}">Gestione dei Prodotti</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item" sec:authorize="isAnonymous()" ><a class="nav-link" th:href="@{register}">Sign Up</a></li>
+                    <li class="nav-item" sec:authorize="isAnonymous()" ><a class="nav-link" th:href="@{login}">Log In</a></li>
+                </ul>
+                <ul class="nav navbar-nav ">
+                    <li class="nav-item" sec:authorize="isAuthenticated()"><span class="text-light" sec:authentication="principal.username">User</span></li>
+                </ul>
+                <ul class="nav navbar-nav ">
+                    <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/logout}">Log out</a> </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</nav>
+<br>
+<br>
+<div class = "container">
+    <div class = "row">
+        <h1> Lista dei Prodotti</h1>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <a th:href="@{formNewProdotto}" class="btn btn-primary btn-sm mb-3"> Aggiungi un prodotto </a>
+        </div>
+    </div>
+    <table class= "table table-striped table-bordered">
+        <thead class= "table-dark">
+        <tr>
+            <th> Immagine </th>
+            <th> Nome </th>
+            <th> Descrizione </th>
+            <th> Prezzo </th>
+            <th> Fornitori </th>
+            <th> Cancella prodotto </th>
+            <th> Modifica prodotto </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="prodotto: ${prodotti}">
+            <td>
+              <div class="mb-3">
+                  <img th:src="@{'/image/' + ${prodotto.image}}" style="width: 100px;height: 100px">
+                </div>
+             </td>
+             <td th:text="${prodotto.nome}"></td>
+             <td th:text="${prodotto.descrizione}"></td>
+             <td th:text="${prodotto.prezzo}"></td>
+             <td th:text="${prodotto.fornitori}"></td>
+             <td>
+                 <a th:href="@{/admin/deleteProdotto/{prodottoId}(prodottoId=${prodotto.id})}"
+                    class="btn btn-danger"> Cancella</a>
+             </td>
+             <td>
+                 <a th:href="@{/admin/formUpdateProdotto/{prodottoId}(prodottoId=${prodotto.id})}"
+                    class="btn btn-primary"> Modifica </a>
+             </td>
+
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+</body>
+</html>
