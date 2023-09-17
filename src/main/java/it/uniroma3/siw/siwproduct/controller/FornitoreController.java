@@ -1,7 +1,9 @@
 package it.uniroma3.siw.siwproduct.controller;
 
 import it.uniroma3.siw.siwproduct.model.Fornitore;
+import it.uniroma3.siw.siwproduct.model.Prodotto;
 import it.uniroma3.siw.siwproduct.service.FornitoreService;
+import it.uniroma3.siw.siwproduct.service.ProdottoService;
 import it.uniroma3.siw.siwproduct.validator.FornitoreValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
-
 @Controller
 public class FornitoreController {
 	
@@ -24,6 +25,8 @@ public class FornitoreController {
 	@Autowired
 	private FornitoreValidator fornitoreValidator;
 
+	@Autowired
+	private ProdottoService prodottoService;
 
 
 	//metodoto che visualizza tutti i fornitori nella dashboard dell'admin
@@ -35,7 +38,7 @@ public class FornitoreController {
 
 
 	@GetMapping(value="/admin/formNewFornitore")
-	public String getFornitoreAdd(Model model) {
+	public String formNewFornitore(Model model) {
 		model.addAttribute("fornitore", new Fornitore());
 		return "admin/formNewFornitore";
 	}
@@ -88,6 +91,18 @@ public class FornitoreController {
 		return "redirect:/admin/manageFornitori";
 	}
 
+	@GetMapping(value="/admin/elencoProdottiFornitore/{fornitoreId}")
+	public String formElencoFornitori(@PathVariable("fornitoreId") Long fornitoreId, Model model) {
+		Fornitore fornitore = this.fornitoreService.findFornitoreById(fornitoreId);
+		if(fornitore!=null) {
+			model.addAttribute("fornitore", fornitore);
+			model.addAttribute("prodotti",prodottoService.findAllProdotti());
+			return "admin/elencoProdottiFornitore";
+
+		}else {
+			return "fornitoreError";
+		}
+	}
 
 
 	//metodo per visualizzare i fornitori
@@ -111,8 +126,27 @@ public class FornitoreController {
 	}
 
 
+	@GetMapping("/admin/addProdotto/{fornitoreId}/{prodottoId}")
+	public String addProdottoToFornitore (@PathVariable("fornitoreId") Long fornitoreId, @PathVariable("prodottoId") Long prodottoId,Model model) {
 
 
+		this.prodottoService.addFornitoreToProdotto(prodottoId, fornitoreId);
+
+		model.addAttribute("fornitore", this.fornitoreService.addProdotto(fornitoreId,prodottoId));
+		model.addAttribute("prodotti", this.prodottoService.findAllProdotti());
+		return "redirect:/admin/elencoProdottiFornitore/{fornitoreId}";
+	}
+
+	@GetMapping("/admin/removeProdotto/{fornitoreId}/{prodottoId}")
+	public String removeProdotto (@PathVariable("fornitoreId") Long fornitoreId, @PathVariable("prodottoId") Long prodottoId,Model model) {
+
+		this.prodottoService.deleteFornitoreFromProdotto(prodottoId, fornitoreId);
+
+		model.addAttribute("fornitore", this.fornitoreService.removeProdotto(fornitoreId,prodottoId));
+		model.addAttribute("prodotti", this.prodottoService.findAllProdotti());
+
+		return "redirect:/admin/elencoProdottiFornitore/{fornitoreId}";
+	}
 
 
 }

@@ -38,11 +38,6 @@ public class ProdottoService {
 		return this.prodottoRepository.save(prodotto);
 	}
 	@Transactional
-	public void updateProdotto(Prodotto prodotto) {
-		this.prodottoRepository.save(prodotto);
-	}
-
-	@Transactional
 	public void deleteProdotto(Long prodottoId) {
 		this.prodottoRepository.deleteById(prodottoId);
 	}
@@ -52,8 +47,8 @@ public class ProdottoService {
 		return this.prodottoRepository.findById(prodottoId).orElse(null);
 	}
 	
-	public Prodotto saveProdotto(Prodotto prodotto) {
-		return this.prodottoRepository.save(prodotto);
+	public void saveProdotto(Prodotto prodotto) {
+		this.prodottoRepository.save(prodotto);
 	}
 	
 
@@ -67,7 +62,7 @@ public class ProdottoService {
 		Fornitore fornitore= this.fornitoreRepository.findById(fornitoreId).orElse(null);
 		Prodotto prodotto = this.prodottoRepository.findById(prodottoId).orElse(null);
 		if(prodotto!=null&&fornitore!=null) {
-			List<Fornitore> fornitori= prodotto.getFornitori();
+			Set<Fornitore> fornitori= prodotto.getFornitori();
 			fornitori.add(fornitore);
 			prodotto.setFornitori(fornitori);
 		}
@@ -81,7 +76,7 @@ public class ProdottoService {
 		Prodotto prodotto = this.prodottoRepository.findById(prodottoId).orElse(null);
 		Fornitore fornitore = this.fornitoreRepository.findById(fornitoreId).orElse(null);
 		if(prodotto!=null && fornitore!=null) {
-			List<Fornitore> fornitori = prodotto.getFornitori();
+			Set<Fornitore> fornitori = prodotto.getFornitori();
 			fornitori.remove(fornitore);
 			prodotto.setFornitori(fornitori);
 		}
@@ -120,5 +115,98 @@ public class ProdottoService {
 		}
 		return false;
 	}
+
+
+	//ALESSANDRO
+	/*@Autowired
+	private ProdottoRepository prodottoRepository;
+
+	@Autowired
+	private ImageRepository immagineRepository;
+
+	@Autowired
+	private ReviewRepository commentiRepository;
+
+	@Autowired
+	private FornitoreRepository fornitoreRepository;
+
+	@Autowired
+	private GlobalController globalController;
+
+
+
+
+
+
+
+	@Transactional
+	public void addCommento (Prodotto prodotto,Review commento){
+		Set<Review> commenti = prodotto.getReviews();
+		commenti.add(commento);
+		prodotto.setReviews(commenti);
+		this.prodottoRepository.save(prodotto);
+	}
+
+	public Prodotto addCommento(Long prodottoId,Long commentoId){
+		Prodotto prodotto = this.prodottoRepository.findById(prodottoId).get();
+		Review commento = this.commentiRepository.findById(commentoId).get();
+
+		Set<Review> commenti = prodotto.getReviews();
+		commenti.add(commento);
+		prodotto.setReviews(commenti);
+		return this.prodottoRepository.save(prodotto);
+	}
+
+	public Prodotto removeCommento(Long prodottoId,Long commentoId){
+
+		Prodotto prodotto = this.prodottoRepository.findById(prodottoId).get();
+		Review commento = this.commentiRepository.findById(commentoId).get();
+
+		Set<Review> commenti = prodotto.getReviews();
+		commenti.remove(commento);
+		prodotto.setReviews(commenti);
+		return this.prodottoRepository.save(prodotto);
+	}
+
+	@Transactional
+	public boolean commentato (Long prodottoId){
+		return this.verifica(this.findProdottoById(prodottoId));
+	}
+
+	/*private boolean verifica(Prodotto prodotto){
+		Set<Review> commenti = prodotto.getReviews();
+		if (this.globalController.getUser()==null) {
+			return false;
+		}
+		String username = this.globalController.getUser().getUsername();
+		for (Review c : commenti) {
+			if (c.getUsername().equals(username)) {
+				return false;
+			}
+		}
+		return true;
+	}*/
+/*
+
+	private Long rimuoviFornitore(Long id){
+		List<Fornitore> fornitori = this.prodottoRepository.findById(id).get().getFornitori();
+		for (Fornitore fornitore : fornitori) {
+			this.removeFornitore(id, fornitore.getId());
+			this.fornitoreRepository.save(fornitore);
+		}
+		this.fornitoreRepository.findById(id);
+		return id;
+	}
+
+	public Prodotto aggiornaProdotto (Long vecchioId,String nome, Float prezzo, String descrizione, MultipartFile immagine) throws IOException{
+
+		Prodotto vecchio = this.prodottoRepository.findById(vecchioId).get();
+
+		vecchio.setNome(nome);
+		vecchio.setPrezzo(prezzo);
+		vecchio.setDescrizione(descrizione);
+
+		return this.creaProdotto(vecchio, immagine);
+	}*/
 
 }

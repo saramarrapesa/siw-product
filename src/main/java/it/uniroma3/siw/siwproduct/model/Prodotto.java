@@ -1,11 +1,11 @@
 package it.uniroma3.siw.siwproduct.model;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity
@@ -22,7 +22,7 @@ public class Prodotto {
 	
 	private String descrizione;
 
-
+	@NotNull
 	private float prezzo;
 
 	@OneToOne
@@ -30,7 +30,7 @@ public class Prodotto {
 
 	
 	@ManyToMany
-	private List<Fornitore> fornitori;
+	private Set<Fornitore> fornitori;
 	
 	@OneToMany
     private Set<Review> reviews;
@@ -67,11 +67,11 @@ public class Prodotto {
 		this.prezzo = prezzo;
 	}
 
-	public List<Fornitore> getFornitori() {
+	public Set<Fornitore> getFornitori() {
 		return fornitori;
 	}
 
-	public void setFornitori(List<Fornitore> fornitori) {
+	public void setFornitori(Set<Fornitore> fornitori) {
 		this.fornitori = fornitori;
 	}
 	
@@ -100,6 +100,7 @@ public class Prodotto {
 		Prodotto other = (Prodotto) obj;
 		return Objects.equals(id, other.id) && Objects.equals(nome, other.nome);
 	}
+
 
 	public Image getImage() {
 		return image;

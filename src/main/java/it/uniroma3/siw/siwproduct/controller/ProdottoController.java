@@ -82,7 +82,7 @@ public class ProdottoController {
 	}
 
 	//metodo che crea un nuovo prodotto
-	@PostMapping("/admin/manageProdotti")
+	@PostMapping("/admin/prodotto/add")
 	public String newProdotto(@Valid @ModelAttribute("prodotto")Prodotto prodotto , BindingResult bindingResult , @RequestParam("prodottoImage") MultipartFile multipartFile, Model model) throws IOException {
 		this.prodottoValidator.validate(prodotto, bindingResult);
 		if(!bindingResult.hasErrors()) {
@@ -101,9 +101,6 @@ public class ProdottoController {
 		model.addAttribute("prodotto", new Prodotto());
 		return "admin/formNewProdotto";
 	}
-
-
-
 
 	//metodo per modificare un prodotto
 	@GetMapping(value="/admin/formUpdateProdotto/{prodottoId}")
@@ -136,77 +133,44 @@ public class ProdottoController {
 	}
 
 	//metodo per eliminare un prodotto
-	@GetMapping(value="/admin/manageProdotti/{prodottoId}")
-	public String RemoveProdotto(@PathVariable("prodottoId") Long prodottoId, Model model) {
+	@GetMapping(value="/admin/deleteProdotto/{prodottoId}")
+	public String RemoveProdotto(@PathVariable("prodottoId") Long prodottoId) {
 		this.prodottoService.deleteProdotto(prodottoId);
-		return  "admin/manageProdotti";
+		return  "redirect:/admin/manageProdotti";
 	}
 
-
-	/*metodo per visualizzare tutti i fornitori di un prodotto
-	@GetMapping(value = "/admin/manageProdotti/{prodottoId}")
-	public String ElencoFornitoriProdotto (@PathVariable("prodottoId") Long prodottoId, Model model){
-		model.addAttribute("elencoFornitori", this.prodottoService.elencoFornitoriProdottoById(prodottoId));
-		return "/admin/elencoFornitori";
-
-	}
-
-	//metodo per aggiungere un fornitore all'elenco di fornitori di un prodotto
-	@GetMapping(value="admin/formNewFornitore/{fornitoreId}/{prodottoId}")
-	public String addFornitoreToProdotto(@PathVariable("fornitoreId")Long fornitoreId , @PathVariable("prodottoId") Long prodottoId, Model model) {
-		Prodotto prodotto = this.prodottoService.addFornitoreToProdotto(fornitoreId, prodottoId);
+	@GetMapping(value="/admin/elencoFornitoriProdotto/{prodottoId}")
+	public String formElencoFornitori(@PathVariable("prodottoId") Long prodottoId, Model model) {
+		Prodotto prodotto = this.prodottoService.findProdottoById(prodottoId);
 		if(prodotto!=null) {
 			model.addAttribute("prodotto", prodotto);
-			return "admin/elencoFornitori";
-		}
-		else {
-			return "prodottoError";
-		}
-	}*/
-	//metodo per rimuovere un fornitore dall'elenco di fornitori di un prodotto
+			model.addAttribute("fornitori",fornitoreService.getAllFornitori());
+			return "admin/elencoFornitoriProdotto";
 
-	/*@GetMapping(value = "/admin/elencoFornitori/{fornitoreId}/{prodottoId}")
-	public String removeFornitoreToProdotto(@PathVariable("prodottoId") Long prodottoId , @PathVariable("fornitoreId") Long fornitoreId, Model model ){
-		Prodotto prodotto = this.prodottoService.deleteFornitoreFromProdotto(prodottoId,fornitoreId);
-		if(prodotto!=null){
-			List<Fornitore> fornitoriToAdd= fornitoreService.findFornitoriNotInProdotto(prodottoId);
-			model.addAttribute("prodotto",prodotto);
-			model.addAttribute("fornitoriToAdd" , fornitoriToAdd);
-			return "admin/elencoFornitori";
-		}
-		else{
-			return "prodottoError";
-		}
-	}
-	
-	@GetMapping(value= "/admin/addFornitore/{fornitoreId}")
-	public String addFornitore(@PathVariable("fornitoreId") Long fornitoreId, Model model) {
-		model.addAttribute("fornitori", this.fornitoreService.findAllFornitori() );
-		Prodotto prodotto = this.prodottoService.findProdottoById(fornitoreId);
-		if(prodotto!=null) {
-			model.addAttribute("prodotto", prodotto);
-			return "admin/fornitoriToAdd";
 		}else {
 			return "prodottoError";
 		}
 	}
+	@GetMapping("/admin/addFornitore/{prodottoId}/{fornitoreId}")
+	public String addFornitore (@PathVariable("prodottoId") Long prodottoId, @PathVariable("fornitoreId") Long fornitoreId, Model model) {
 
-	@GetMapping("admin/updateFornitori/{prodottoId}")
-	public String updateFornitori(@PathVariable("prodottoId") Long prodottoId, Model model){
-		List<Fornitore> fornitoriToAdd= this.fornitoreService.findFornitoriNotInProdotto(prodottoId);
-		model.addAttribute("fornitoriToAdd", fornitoriToAdd);
-		Prodotto prodotto= this.prodottoService.findProdottoById(prodottoId);
-		if(prodotto!=null){
-			model.addAttribute("prodotto", prodotto);
-			return "admin/fornitoriToAdd";
-		}else{
-			return "prodottoError";
-		}
+		this.fornitoreService.addProdotto(fornitoreId, prodottoId);
+
+		model.addAttribute("prodotto", this.prodottoService.addFornitoreToProdotto(prodottoId, fornitoreId));
+		model.addAttribute("fornitori", this.fornitoreService.getAllFornitori());
+
+		return "redirect:/admin/elencoFornitoriProdotto/{prodottoId}";
 	}
 
-*/
-	
-	
-	
+	@GetMapping(value="/admin/removeFornitore/{prodottoId}/{fornitoreId}")
+	public String removeFornitore (@PathVariable("prodottoId") Long prodottoId, @PathVariable("fornitoreId") Long fornitoreId, Model model) {
+
+		this.fornitoreService.removeProdotto(fornitoreId, prodottoId);
+
+		model.addAttribute("prodotto", this.prodottoService.deleteFornitoreFromProdotto(prodottoId, fornitoreId));
+		model.addAttribute("fornitori", this.fornitoreService.getAllFornitori());
+
+		return "redirect:/admin/elencoFornitoriProdotto/{prodottoId}";
+	}
 
 }

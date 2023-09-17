@@ -10,7 +10,6 @@ import java.util.List;
 public interface ProdottoRepository extends CrudRepository<Prodotto, Long> {
 
 	public List<Prodotto> findByNome(String nome);
-	
-	public boolean existsByNome(String nome);
 
+	boolean existsByNome(String nome);
 }

@@ -23,10 +23,10 @@ public class ProdottoValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
         Prodotto prodotto = (Prodotto)target;
-        if(prodotto.getNome()!=null && prodottoRepository.existsByNome(prodotto.getNome()))
-        		errors.reject("prodotto.duplicate");
-        		
-        	
+		if(prodotto.getNome()!=null && prodottoRepository.existsByNome(prodotto.getNome()))
+			errors.reject("prodotto.duplicate");
+
+
 	}
 
 }

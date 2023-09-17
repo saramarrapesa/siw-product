@@ -15,7 +15,7 @@
 
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <!-- Brand -->
-    <a class="navbar-brand" th:href="@{manageProdotti}">Product Management System</a>
+    <a class="navbar-brand" th:href="@{manageProdotti}">Gestione dei prodotti</a>
 
     <!-- Toggler/collapsibe Button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -25,23 +25,17 @@
     <!-- Navbar links -->
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{manageProdotti}"></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{manageFornitori}"></a>
-            </li>
         </ul>
     </div>
 </nav>
 <br>
 <br>
      <div class="container">
-         <div class="row">
+        <div class="row">
              <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
                  <h1 class="text-center"> Create new Product</h1>
                  <div class="card-body">
-                     <form th:action="@{/prodotti}" th:object="${prodotto}" method="POST"  enctype="multipart/form-data">
+                     <form th:action="@{/admin/prodotto/add}" th:object="${prodotto}" method="POST"  enctype="multipart/form-data">
                          <div class="form-group">
                              <label> Nome </label>
                              <input
@@ -69,32 +63,23 @@
                                      placeholder="Enter the Price of product"
                              />
                          </div>
-                         <div class="form-group">
-                             <label> Fornitori </label>
-                             <select class="custom-select" multiple>
-                                 <option selected>elenco Fornitori</option>
-                                 <option value="1">One</option>
-                                 <option value="2">Two</option>
-                                 <option value="3">Three</option>
-                             </select>
-                         </div>
-                         <div class="form-group">
-                             <label> Immagini </label>
-                             <div class="custom-file">
-                                 <input type="file" name ="prodottoImage" class="custom-file-input" id="customFile">
-                                 <label class="custom-file-label" for="customFile">Choose file</label>
-                             </div>
-                         </div>
+                           <div class="form-group">
+                              <label> Immagini </label>
+                              <div class="custom-file">
+                                  <input type="file" name ="prodottoImage" class="custom-file-input" id="customFile">
+                                  <label class="custom-file-label" for="customFile">Choose file</label>
+                              </div>
+                          </div>
 
-                         <div class="box-footer">
-                             <button type="submit" class = "btn btn-primary">
-                                 Submit
-                             </button>
-                         </div>
-                     </form>
-                 </div>
-             </div>
-         </div>
+                          <div class="box-footer">
+                              <button type="submit" class = "btn btn-primary">
+                                  Submit
+                              </button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
      </div>
 
 </body>

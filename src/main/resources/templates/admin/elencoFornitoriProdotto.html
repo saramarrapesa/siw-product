@@ -43,12 +43,14 @@
 <br>
 <br>
 <div class = "container">
-    <div class = "row">
-        <h1> List Providers </h1>
-    </div>
+    <!--<div class = "row">
+        <h1> Lista Fornitori del prodotto
+            <a th:href="@{'/prodotto' + '/' + ${prodotto.id}}">
+            <span th:text="${prodotto.getNome()}"></span>
+        </a> </h1>
+   </div>
     <div class="row">
         <div class="col-lg-3">
-            <a th:href="@{formNewFornitore}" class="btn btn-primary btn-sm mb-3"> Aggiungi </a>
         </div>
     </div>
     <table class= "table table-striped table-bordered">
@@ -60,26 +62,67 @@
             <th> Cancella </th>
         </tr>
         </thead>
-
+               <tbody>
+               <tr th:each="fornitore: ${prodotto.fornitori}">
+                   <span th:if="${prodotto.fornitori==null || prodotto.fornitori.isEmpty()}">non ci sono fornitori nel database</span>
+                   <td th:text="${fornitore.nome}"></td>
+                   <td th:text="${fornitore.address}"></td>
+                   <td th:text="${fornitore.email}"></td>
+                   <td>
+                       <a th:href="@{'/admin/addFornitore/'+${prodotto.id}+'/'+${fornitore.id}}"
+                          class="btn btn-danger"> Rimuovi</a>
+                   </td>
+               </tr>
+               </tbody>
+        </table>
+        <br>
+        <table class= "table table-striped table-bordered">
+            <thead class= "table-dark">
+            <tr>
+                <th> Nome </th>
+                <th> Indirizzo </th>
+                <th> Email </th>
+                <th> Aggiungi </th>
+            </tr>
+            </thead>
+        <h1>Lista Fornitori disponibili:</h1>
         <tbody>
-        <tr th:each="fornitore: ${prodotto.fornitori}">
+        <span th:if="${fornitori==null || fornitori.isEmpty()==null}">non ci sono fornitori nel database</span>
+        <tr th:each="fornitore: ${fornitori}">
             <td th:text="${fornitore.nome}"></td>
             <td th:text="${fornitore.address}"></td>
             <td th:text="${fornitore.email}"></td>
             <td>
-                <div class="mb-3">
-                    <input class="form-control" type="file" id="formFileMultiple" multiple>
-                </div>
+                <a  th:href="@{'/admin/removeFornitore/'+${prodotto.id}+'/'+${fornitore.id}}"
+                   class="btn btn-primary"> Aggiungi</a>
             </td>
-            <td>
-                <a th:href="@{manageFornitori/{fornitoreId}(fornitoreId=${fornitore.id})}"
-                   class="btn btn-danger"> Remove</a>
-            </td>
-
         </tr>
         </tbody>
 
-    </table>
+           </table>
+    </div>-->
+    <div class="box1">
+        <h3 th:text="'Fornitori del prodotto ' + ${prodotto.id}"></h3>
+        <div th:if="${prodotto.fornitori.isEmpty()}">Non ci sono fornitori per questo prodotto.</div>
+        <ul>
+            <li th:each="fornitore : ${prodotto.fornitori}">
+                <span th:text="${fornitore.nome}+' '+${fornitore.address} + ' - '"></span>
+                <a class="editdir" th:href="@{'/admin/removeFornitore/'+ ${prodotto.id}+'/'+${fornitore.id}}">Remove</a>
+            </li>
+        </ul>
+    </div>
+    <div class="box2">
+        <h3>Lista dei fornitori disponibili:</h3>
+        <ul>
+            <li th:each="fornitore : ${fornitori}">
+                <span th:text="${fornitore.nome}+' '+${fornitore.address}"></span>
+                <a class="editdir" th:href="@{'/admin/addFornitore/'+ ${prodotto.id}+'/'+${fornitore.id}}">Add</a>
+            </li>
+        </ul>
+    </div>
+
 </div>
+</div>
+
 </body>
 </html>

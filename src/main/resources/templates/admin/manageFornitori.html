@@ -58,6 +58,7 @@
             <th> Nome </th>
             <th> Indirizzo </th>
             <th> Email </th>
+            <th> Prodotti</th>
             <th> Cancella fornitore </th>
             <th> Modifica fornitore</th>
         </tr>
@@ -68,6 +69,9 @@
             <td th:text="${fornitore.nome}"></td>
             <td th:text="${fornitore.address}"></td>
             <td th:text="${fornitore.email}"></td>
+            <td > <a th:href="@{/admin/elencoProdottiFornitore/{fornitoreId}(fornitoreId=${fornitore.id})}"
+                     class="btn btn-primary"> Elenco Prodotti </a>
+            </td>
             <td>
                 <a th:href="@{/admin/deleteFornitore/{fornitoreId}(fornitoreId=${fornitore.id})}"
                    class="btn btn-danger"> Cancella</a>

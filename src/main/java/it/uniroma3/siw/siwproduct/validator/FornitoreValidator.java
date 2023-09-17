@@ -26,6 +26,6 @@ public class FornitoreValidator implements Validator {
 		Fornitore fornitore = (Fornitore) target;
 		if(fornitore.getNome()!=null && fornitore.getEmail()!=null && fornitoreRepository.existsByNomeAndEmail(fornitore.getNome(), fornitore.getEmail()))
 			errors.reject("fornitore.duplicate");
-	}
+		}
 
 }

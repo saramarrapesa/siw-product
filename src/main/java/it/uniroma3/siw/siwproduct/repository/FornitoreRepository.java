@@ -20,4 +20,5 @@ public interface FornitoreRepository extends CrudRepository<Fornitore, Long> {
 	 Iterable<Fornitore> findFornitoriNotInProdotto(@Param("prodottoId") Long prodottoId);
 	 boolean existsByNomeAndEmail(String nome, String email);
 
+
 }

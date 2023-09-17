@@ -2,6 +2,7 @@ package it.uniroma3.siw.siwproduct.model;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ public class Fornitore {
 	private String email;
 	
 	@ManyToMany(mappedBy = "fornitori")
-	private List<Prodotto> prodotti;
+	private Set<Prodotto> prodotti;
 
 	public Long getId() {
 		return id;
@@ -50,11 +51,11 @@ public class Fornitore {
 		this.email = email;
 	}
 
-	public List<Prodotto> getProdotti() {
+	public Set<Prodotto> getProdotti() {
 		return prodotti;
 	}
 
-	public void setProdotti(List<Prodotto> prodotti) {
+	public void setProdotti(Set<Prodotto> prodotti) {
 		this.prodotti = prodotti;
 	}
 
@@ -82,6 +83,7 @@ public class Fornitore {
 		Fornitore other = (Fornitore) obj;
 		return Objects.equals(email, other.email) && Objects.equals(id, other.id);
 	}
+
 
 
 }

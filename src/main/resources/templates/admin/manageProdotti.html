@@ -68,13 +68,16 @@
         <tr th:each="prodotto: ${prodotti}">
             <td>
               <div class="mb-3">
-                  <img th:src="@{'/image/' + ${prodotto.image}}" style="width: 100px;height: 100px">
+                  <img alt="" th:src="${prodotto.image}" style="width: 100px;height: 100px">
                 </div>
              </td>
              <td th:text="${prodotto.nome}"></td>
              <td th:text="${prodotto.descrizione}"></td>
              <td th:text="${prodotto.prezzo}"></td>
-             <td th:text="${prodotto.fornitori}"></td>
+
+             <td > <a th:href="@{/admin/elencoFornitoriProdotto/{prodottoId}(prodottoId=${prodotto.id})}"
+                      class="btn btn-primary"> Elenco fornitori </a>
+             </td>
              <td>
                  <a th:href="@{/admin/deleteProdotto/{prodottoId}(prodottoId=${prodotto.id})}"
                     class="btn btn-danger"> Cancella</a>
@@ -90,4 +93,6 @@
     </table>
 </div>
 </body>
+<script src="/js/jquery-3.1.1.min.js"></script>
+<script src="/js/bootstrap.js"></script>
 </html>

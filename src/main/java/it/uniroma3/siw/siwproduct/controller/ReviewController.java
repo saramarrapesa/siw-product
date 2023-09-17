@@ -59,4 +59,45 @@ public class ReviewController {
 		this.prodottoService.saveProdotto(prodotto);
 		return this.prodottoService.function(model, prodotto, this.globalController.getUser().getUsername());
 	}
+
+
+ /*
+@Autowired
+private ReviewService commentoService;
+
+	@Autowired
+	private ProdottoService prodottoService;
+
+	@Autowired
+	private ReviewValidator commentoValidator;
+
+	@Autowired
+	private GlobalController globalController;
+
+/*
+	@PostMapping("/addCommento/{id}")
+	public String addCommentoToProdotto(@Valid @ModelAttribute("commento") Review commento, BindingResult bindingResult, Model model,@PathVariable("id") Long id){
+
+		//commento.setAutore(this.globalController.getUser().getUsername());
+		Prodotto prodotto = this.prodottoService.findProdottoById(id);
+		this.commentoValidator.validate(commento, bindingResult);
+		this.prodottoService.addCommento(prodotto,this.commentoService.creaCommento(commento));
+
+		model.addAttribute("prodotto", prodotto);
+		model.addAttribute("commentato", this.prodottoService.commentato(id));
+		model.addAttribute("user", this.globalController.getUser());
+		model.addAttribute("commento", new Review());
+		return "prodotto";
+	}*/
+
+	/*@GetMapping("/removeCommento/{prodottoId}/{commentoId}")
+	public String removeCommentoToProdotto(@PathVariable("prodottoId") Long prodottoId, @PathVariable("commentoId") Long commentoId, Model model) {
+
+		model.addAttribute("prodotto", this.prodottoService.removeCommento(prodottoId, commentoId));
+		this.commentoService.deleteCommento(commentoId);
+		model.addAttribute("commentato", this.prodottoService.commentato(prodottoId));
+		model.addAttribute("user", this.globalController.getUser());
+		model.addAttribute("commento", new Review());
+		return "prodotto";
+	}*/
 }

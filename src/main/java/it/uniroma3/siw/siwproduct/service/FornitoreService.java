@@ -1,7 +1,9 @@
 package it.uniroma3.siw.siwproduct.service;
 
 import it.uniroma3.siw.siwproduct.model.Fornitore;
+import it.uniroma3.siw.siwproduct.model.Prodotto;
 import it.uniroma3.siw.siwproduct.repository.FornitoreRepository;
+import it.uniroma3.siw.siwproduct.repository.ProdottoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ public class FornitoreService {
 	
 	@Autowired
 	public FornitoreRepository fornitoreRepository;
+	@Autowired
+	public ProdottoRepository prodottoRepository;
 	
 	@Transactional
 	public Fornitore createFornitore(Fornitore fornitore){
@@ -26,7 +30,7 @@ public class FornitoreService {
 		return this.fornitoreRepository.findAll();
 	}
 	
-/*	@Transactional
+	@Transactional
 	public List<Fornitore> findFornitoriNotInProdotto(Long prodottoId){
 		List<Fornitore> fornitoriToAdd = new ArrayList<>();
 		for(Fornitore f : this.fornitoreRepository.findFornitoriNotInProdotto(prodottoId)) {
@@ -34,7 +38,7 @@ public class FornitoreService {
 		}
 		return fornitoriToAdd;
 	}
-*/
+
 	//metodo per aggiornare un prodotto
 	@Transactional
 	public void saveFornitore(Fornitore fornitore) {
@@ -50,4 +54,43 @@ public class FornitoreService {
 		return this.fornitoreRepository.findById(id).orElse(null);
 	}
 
+	@Transactional
+	public Fornitore addProdotto (Long fornitoreId, Long prodottoId){
+
+		Fornitore fornitore = this.fornitoreRepository.findById(fornitoreId).get();
+		Prodotto prodotto = this.prodottoRepository.findById(prodottoId).get();
+
+		Set<Prodotto> prodotti = fornitore.getProdotti();
+		prodotti.add(prodotto);
+		fornitore.setProdotti(prodotti);
+		return this.fornitoreRepository.save(fornitore);
+	}
+
+	@Transactional
+	public Fornitore removeProdotto (Long fornitoreId, Long prodottoId){
+
+		Fornitore fornitore = this.fornitoreRepository.findById(fornitoreId).get();
+		Prodotto prodotto = this.prodottoRepository.findById(prodottoId).get();
+
+		Set <Prodotto> prodotti = fornitore.getProdotti();
+		prodotti.remove (prodotto);
+		fornitore.setProdotti(prodotti);
+
+		return this.fornitoreRepository.save(fornitore);
+	}
+	/*
+
+
+	private Long rimuoviProdotti(Long id){
+		List<Prodotto> prodotti = this.fornitoreRepository.findById(id).get().getProdotti();
+		for (Prodotto prodotto : prodotti) {
+			this.prodottoService.removeFornitore(prodotto.getId(), id);
+			this.prodottoRepository.save(prodotto);
+		}
+		this.fornitoreRepository.findById(id);
+		return id;
+	}
+
+
+*/
 }
