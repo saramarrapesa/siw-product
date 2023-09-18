@@ -41,12 +41,12 @@
 
 		<div class="collapse navbar-collapse" id="navbarResponsive">
 			<ul class="navbar-nav ms-auto">
-				<!--<form th:action="@{prodotti}" method="get">
+				<form th:action="@{prodotti}" method="get">
 					<input type="search"  name="nome"  class="form-control rounded" placeholder="Search" aria-label="Search" style="width: fit-content"/>
 					<span class="input-group-text border-0" id="search-addon">
                     <button class="fas fa-search" type="submit"></button>
                 </span>
-				</form>-->
+				</form>
 				<li class="nav-item" sec:authorize="isAnonymous()" ><a class="nav-link" th:href="@{register}">Sign Up</a></li>
 				<li class="nav-item" sec:authorize="isAnonymous()" ><a class="nav-link" th:href="@{login}">Log In</a></li>
 			</ul>

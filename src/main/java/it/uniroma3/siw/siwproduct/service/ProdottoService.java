@@ -57,6 +57,9 @@ public class ProdottoService {
 	//public Prodotto findProdottoByNome(String nome){return this.prodottoRepository.findByNomeProdotto(nome);}
 
 	@Transactional
+	public List<Prodotto> findProdottiByNome(String nome) { return this.prodottoRepository.findByNome(nome);}
+
+	@Transactional
 	public Iterable<Prodotto> findAllProdotti(){
 		return this.prodottoRepository.findAll();
 	}

@@ -43,8 +43,13 @@ public class ProdottoController {
 	//metodo per visualizzare tutti i prodotti
 
 	@GetMapping("/prodotti")
-	public  String getProdotti(Model model){
+	public  String getProdotti(Model model, String nome){
+		if(nome!=null){
+			model.addAttribute("prodotti", this.prodottoService.findProdottiByNome(nome));
+		}
+		else{
 		model.addAttribute("prodotti", this.prodottoService.findAllProdotti());
+		}
 		return "prodotti";
 	}
 
