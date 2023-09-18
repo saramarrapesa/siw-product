@@ -10,6 +10,7 @@ import it.uniroma3.siw.siwproduct.model.Review;
 import it.uniroma3.siw.siwproduct.repository.FornitoreRepository;
 import it.uniroma3.siw.siwproduct.repository.ImageRepository;
 import it.uniroma3.siw.siwproduct.repository.ProdottoRepository;
+import it.uniroma3.siw.siwproduct.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -29,6 +30,8 @@ public class ProdottoService {
 
 	@Autowired
 	private ImageRepository imageRepository;
+	@Autowired
+	private ReviewRepository reviewRepository;
 
 	@Transactional
 	public Prodotto createNewProdotto(Prodotto prodotto , MultipartFile multipartFile) throws IOException {
@@ -50,7 +53,8 @@ public class ProdottoService {
 	public void saveProdotto(Prodotto prodotto) {
 		this.prodottoRepository.save(prodotto);
 	}
-	
+
+	//public Prodotto findProdottoByNome(String nome){return this.prodottoRepository.findByNomeProdotto(nome);}
 
 	@Transactional
 	public Iterable<Prodotto> findAllProdotti(){
@@ -86,8 +90,8 @@ public class ProdottoService {
 
 	//ogni utente può scrivere una recensione sul prodotto
 	
-	public String function (Model model , Prodotto prodotto , String username) {
-		List<Fornitore> fornitoriProdotto = new ArrayList<>();
+	public void function (Model model , Prodotto prodotto , String username) {
+		Set<Fornitore> fornitoriProdotto = new HashSet<>();
 		if(prodotto.getFornitori()!=null)
 			fornitoriProdotto.addAll(prodotto.getFornitori());
 		fornitoriProdotto.remove(null);
@@ -100,11 +104,12 @@ public class ProdottoService {
 		model.addAttribute("review", new Review());
 		model.addAttribute("reviews", prodotto.getReviews());
 		model.addAttribute("hasReviews", !prodotto.getReviews().isEmpty());
-		
-		return "prodotto.html";
+
 		}
 	
-	
+
+
+
 	@Transactional
 	public boolean alreadyReviewed(Set<Review> reviews , String username){
 		if(reviews != null) {
@@ -115,29 +120,11 @@ public class ProdottoService {
 		}
 		return false;
 	}
+}
 
 
 	//ALESSANDRO
-	/*@Autowired
-	private ProdottoRepository prodottoRepository;
-
-	@Autowired
-	private ImageRepository immagineRepository;
-
-	@Autowired
-	private ReviewRepository commentiRepository;
-
-	@Autowired
-	private FornitoreRepository fornitoreRepository;
-
-	@Autowired
-	private GlobalController globalController;
-
-
-
-
-
-
+	/*
 
 	@Transactional
 	public void addCommento (Prodotto prodotto,Review commento){
@@ -186,27 +173,5 @@ public class ProdottoService {
 		}
 		return true;
 	}*/
-/*
 
-	private Long rimuoviFornitore(Long id){
-		List<Fornitore> fornitori = this.prodottoRepository.findById(id).get().getFornitori();
-		for (Fornitore fornitore : fornitori) {
-			this.removeFornitore(id, fornitore.getId());
-			this.fornitoreRepository.save(fornitore);
-		}
-		this.fornitoreRepository.findById(id);
-		return id;
-	}
 
-	public Prodotto aggiornaProdotto (Long vecchioId,String nome, Float prezzo, String descrizione, MultipartFile immagine) throws IOException{
-
-		Prodotto vecchio = this.prodottoRepository.findById(vecchioId).get();
-
-		vecchio.setNome(nome);
-		vecchio.setPrezzo(prezzo);
-		vecchio.setDescrizione(descrizione);
-
-		return this.creaProdotto(vecchio, immagine);
-	}*/
-
-}

@@ -68,7 +68,7 @@
         <tr th:each="prodotto: ${prodotti}">
             <td>
               <div class="mb-3">
-                  <img alt="" th:src="${prodotto.image}" style="width: 100px;height: 100px">
+                  <img th:src="@{'/image/' + ${prodotto.getImage()}}" style="width: 100px;height: 100px">
                 </div>
              </td>
              <td th:text="${prodotto.nome}"></td>

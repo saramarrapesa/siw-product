@@ -55,16 +55,32 @@ public class ProdottoController {
 		Prodotto prodotto = this.prodottoService.findProdottoById(prodottoId);
 		if(prodotto!=null) {
 			model.addAttribute("prodotto", prodotto);
+			model.addAttribute("user",this.globalController.getUser());
 			model.addAttribute("review", new Review());
 			model.addAttribute("reviews", prodotto.getReviews());
 			model.addAttribute("hasReviews", !prodotto.getReviews().isEmpty());
 
 			if(this.globalController.getUser()!=null&& this.globalController.getUser().getUsername()!=null && this.prodottoService.alreadyReviewed(prodotto.getReviews(),this.globalController.getUser().getUsername()))
-				model.addAttribute("hasNotAlreadyCommented", true);
-			else
 				model.addAttribute("hasNotAlreadyCommented", false);
+			else
+				model.addAttribute("hasNotAlreadyCommented", true);
 			return "prodotto";
 		}else {
+			return "prodottoError";
+		}
+	}
+
+	@PostMapping("/prodotto")
+	public String getProdotto(@Valid @ModelAttribute("prodotto") Prodotto prodotto, BindingResult bindingResult, Model model, @ModelAttribute("prodottoImage") MultipartFile immagine) throws IOException {
+		this.prodottoValidator.validate(prodotto, bindingResult);
+		if (!bindingResult.hasErrors()) {
+			model.addAttribute("prodotto", this.prodottoService.createNewProdotto(prodotto,immagine));
+			model.addAttribute("hasReviews", !prodotto.getReviews().isEmpty());
+			model.addAttribute("user", this.globalController.getUser());
+			model.addAttribute("review", new Review());
+			return "prodotto";
+		}else{
+			model.addAttribute("messaggio", "Attenzione questo prodotto e' già presente nel sistema");
 			return "prodottoError";
 		}
 	}
@@ -172,5 +188,6 @@ public class ProdottoController {
 
 		return "redirect:/admin/elencoFornitoriProdotto/{prodottoId}";
 	}
+
 
 }

@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface FornitoreRepository extends CrudRepository<Fornitore, Long> {
 	
-	@Query(value="select * "
+			@Query(value="select * "
 			+ "from fornitore f "
 			+ "where f.id not in "
 			+ "(select fornitori_id "
@@ -19,6 +19,5 @@ public interface FornitoreRepository extends CrudRepository<Fornitore, Long> {
 
 	 Iterable<Fornitore> findFornitoriNotInProdotto(@Param("prodottoId") Long prodottoId);
 	 boolean existsByNomeAndEmail(String nome, String email);
-
 
 }

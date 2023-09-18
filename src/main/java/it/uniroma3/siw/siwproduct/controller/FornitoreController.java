@@ -1,7 +1,6 @@
 package it.uniroma3.siw.siwproduct.controller;
 
 import it.uniroma3.siw.siwproduct.model.Fornitore;
-import it.uniroma3.siw.siwproduct.model.Prodotto;
 import it.uniroma3.siw.siwproduct.service.FornitoreService;
 import it.uniroma3.siw.siwproduct.service.ProdottoService;
 import it.uniroma3.siw.siwproduct.validator.FornitoreValidator;

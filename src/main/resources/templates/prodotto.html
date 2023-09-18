@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="/css/styles2.css" rel="stylesheet" />
+    <link href="/css/review.css" rel="stylesheet">
     <title>Siw Product</title>
 </head>
 <body >
@@ -60,14 +61,18 @@
         <div class="row gx-4 gx-lg-5 align-items-center">
             <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="" th:src="@{${'/productImages/' + prodotto.image}}" alt="..." /></div>
             <div class="col-md-6">
-                <div class="small mb-1" th:text="${prodotto.id}"></div>
                 <h1 class="display-5 fw-bolder" th:text="${prodotto.nome}">Prodotto</h1>
                 <div class="fs-5 mb-5">
                     &euro; <span class="text-decoration-none" th:text="${prodotto.prezzo}"></span>
                 </div>
                 <p class="lead" th:text="${prodotto.descrizione}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium at dolorem quidem modi. Nam sequi consequatur obcaecati excepturi alias magni, accusamus eius blanditiis delectus ipsam minima ea iste laborum vero?</p>
                 <br>
-                <p class="lead" th:text="${prodotto.fornitori}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium at dolorem quidem modi. Nam sequi consequatur obcaecati excepturi alias magni, accusamus eius blanditiis delectus ipsam minima ea iste laborum vero?</p>
+                <div class="list-group">
+                    <h2>Elenco dei fornitori:</h2>
+                    <p class="lead" th:each="fornitore:${prodotto.fornitori}"
+                       th:text="${fornitore.nome}"></p>
+                </div>
+
             </div>
         </div>
     </div>
@@ -77,64 +82,92 @@
 <br>
 <br>
 <!-- Reviews-->
-<h1 class="text-center">Reviews</h1>
+<div class="container " style="background: #dee2e6;align-content: center">
+<br><h1 class="text-center">Recensioni</h1>
 <div th:if="${hasReviews}">
     <ul th:each="rev : ${reviews}">
-        <div>
-            <span class="grosso" th:text="${rev.username}"></span> <span> ha Scritto </span>
+        <div class="edu-comment">
+            <div class="comment-content">
+                <h3 class="grosso" th:text="${rev.username} "></h3>
+                <div class="comment-top">
+                  <h6 class="title" th:text="${rev.title}"></h6>
+                    <div class="rating">
+                        <i class="fas fa-star star-filled" th:each="star: ${#numbers.sequence(1, rev.rating)}"></i>
+                        <i class="far fa-star star-empty" th:each="star: ${#numbers.sequence(1, 5 - rev.rating)}"></i>
+                    </div>
+                </div>
+                <span class="subtitle" th:text="${rev.description}"></span>
+            </div>
         </div>
-        <div>
-            <span class="grosso">Title: </span> <span th:text="${rev.title}"></span>
+        <div th:if="${rev.username.equals(user.getUsername())}"  sec:authorize="hasAuthority('DEFAULT')">
+        <br><button class="btn btn-primary bg-light" >
+        <a  th:href="'/user/deleteReview/' + ${prodotto.id} + '/' + ${rev.id}" >Cancella</a>
+    </button>
         </div>
-        <div>
-            <span class="grosso">Description: </span> <span th:text="${rev.description}"></span>
-        </div>
-        <div class="bottom-label">
-            <span class="grosso">Rating: </span>
-            <span>
-				        <i class="fas fa-star star-filled" th:each="star: ${#numbers.sequence(1, rev.rating)}"></i>
-				        <i class="far fa-star star-empty" th:each="star: ${#numbers.sequence(1, 5 - rev.rating)}"></i>
-				    </span>
-            <button sec:authorize="hasAuthority('ADMIN')">
-                <a th:href="'/admin/deleteReview/' + ${prodotto.id} + '/' + ${rev.id}">Delete</a>
-            </button>
-        </div>
-        <span>----------------</span>
+       <br> <span><------------------></span>
+        <br>
     </ul>
 </div>
+</div>
+
+<!--Se l'utente non ha ancora commentato-->
 <div class="text-center" th:unless="${hasReviews}">
     <h4>Per ora non ci sono recensioni .</h4>
 </div>
-<div th:if="${hasNotAlreadyCommented}" sec:authorize="hasAuthority('DEFAULT') || hasAuthority('ADMIN')">
-        <h1>Add a review</h1>
-        <form th:action="@{'/user/uploadReview/' + ${prodotto.id}}" method="post" th:object="${review}" class="form">
-            <div>
-                <span><input hidden th:value="${user}" th:field="${review.username}" /></span>
-            </div>
-            <div>
-                <label class="grosso">Ttile:</label>
-                <span><input type="text" th:field="${review.title}" /></span>
-            </div>
-            <div>
-                <label class="grosso">Description:</label>
-                <span><input type="text" th:field="${review.description}" /></span>
-            </div>
-            <div>
-                <label class="grosso">Rating:</label>
-                <span><input type="number" min="1" max="5" th:field="${review.rating}" /></span>
-            </div>
-            <div>
-                <span><button type="submit">Confirm</button></span>
-            </div>
-        </form>
-</div>
+<div th:if="${hasNotAlreadyCommented}" sec:authorize="hasAuthority('DEFAULT')">
 
+    <section class="bg-light">
+        <div class=" container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center">
+                  <button class="btn btn-primary" data-toggle="modal" href="#myModal">
+                        Aggiungi la tua recensione
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal hide" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title">Scrivi la tua recensione</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{'/user/uploadReview/' + ${prodotto.id}}" method="post" th:object="${review}" class="form">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Titolo Recensione</label>
+                            <input type="text" th:field="${review.title}" class="form-control" id="exampleFormControlSelect1" aria-describedby="emailHelp" placeholder="Inserisci titolo">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Example textarea</label>
+                            <textarea class="form-control" th:field="${review.description}" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleRating">Rating</label>
+                            <span><input type="number" min="1" max="5" th:field="${review.rating}" id="exampleRating"/></span>
+                        </div>
+                        <div>
+                            <span><button class="btn btn-primary" type="submit">Confirm</button></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
 <footer class="py-5 bg-dark">
     <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
 </footer>
 <!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <!-- Core theme JS-->
-<script src="../../../../../../../Downloads/startbootstrap-shop-item-gh-pages%20(2)/startbootstrap-shop-item-gh-pages/js/scripts.js"></script>
+
 </body>
 </html>
